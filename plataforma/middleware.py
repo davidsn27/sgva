@@ -19,6 +19,7 @@ class FuncionarioOnlyMiddleware:
         # Public / always-allowed paths
         if (
             path == "/"
+            or path == "/inicio/"
             or path.startswith("/info/")
             or path.startswith("/accounts/")
             or path.startswith("/static/")
