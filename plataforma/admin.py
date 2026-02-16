@@ -10,7 +10,7 @@ def export_as_csv(modeladmin, request, queryset):
     meta = modeladmin.model._meta
     field_names = [field.name for field in meta.fields]
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = f"attachment; filename={meta}.csv"
+    response["Content-Disposition"] = f"attachment; filename={meta.verbose_name_plural}.csv"
     writer = csv.writer(response)
     writer.writerow(field_names)
     for obj in queryset:
