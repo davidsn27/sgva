@@ -28,10 +28,14 @@ class ImportadorDatos:
             else:
                 df = pd.read_csv(archivo)
             
+            # Normalizar columnas (ignorar mayúsculas, tildes, espacios)
+            df.columns = df.columns.str.strip().str.lower().str.normalize('NFKD').str.encode('ascii', 'ignore').str.decode('ascii')
+            
             # Validar columnas requeridas
             columnas_requeridas = ['nombres', 'apellidos', 'tipo_documento', 'numero_documento', 'email']
             if not all(col in df.columns for col in columnas_requeridas):
-                self.errores.append("Faltan columnas requeridas en el archivo")
+                self.errores.append(f"Faltan columnas requeridas en el archivo. Se necesitan: {', '.join(columnas_requeridas)}")
+                self.errores.append(f"Columnas encontradas: {', '.join(df.columns)}")
                 return False
             
             # Procesar cada fila
@@ -94,10 +98,14 @@ class ImportadorDatos:
             else:
                 df = pd.read_csv(archivo)
             
+            # Normalizar columnas (ignorar mayúsculas, tildes, espacios)
+            df.columns = df.columns.str.strip().str.lower().str.normalize('NFKD').str.encode('ascii', 'ignore').str.decode('ascii')
+            
             # Validar columnas requeridas
             columnas_requeridas = ['nit', 'nombre']
             if not all(col in df.columns for col in columnas_requeridas):
-                self.errores.append("Faltan columnas requeridas en el archivo")
+                self.errores.append(f"Faltan columnas requeridas en el archivo. Se necesitan: {', '.join(columnas_requeridas)}")
+                self.errores.append(f"Columnas encontradas: {', '.join(df.columns)}")
                 return False
             
             # Procesar cada fila
@@ -154,10 +162,14 @@ class ImportadorDatos:
             else:
                 df = pd.read_csv(archivo)
             
+            # Normalizar columnas (ignorar mayúsculas, tildes, espacios)
+            df.columns = df.columns.str.strip().str.lower().str.normalize('NFKD').str.encode('ascii', 'ignore').str.decode('ascii')
+            
             # Validar columnas requeridas
             columnas_requeridas = ['numero_documento_aprendiz', 'nit_empresa']
             if not all(col in df.columns for col in columnas_requeridas):
-                self.errores.append("Faltan columnas requeridas en el archivo")
+                self.errores.append(f"Faltan columnas requeridas en el archivo. Se necesitan: {', '.join(columnas_requeridas)}")
+                self.errores.append(f"Columnas encontradas: {', '.join(df.columns)}")
                 return False
             
             # Procesar cada fila
