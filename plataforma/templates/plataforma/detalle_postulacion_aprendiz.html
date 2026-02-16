@@ -1,0 +1,130 @@
+{% extends "plataforma/base.html" %}
+
+{% block content %}
+<div class="container" style="padding: 40px 20px; max-width: 900px;">
+    <h1 style="color: #2d5016; margin-bottom: 40px;">📌 Detalles de Postulación</h1>
+
+    <!-- Información principal -->
+    <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <div>
+                <h3 style="color: #2d5016; margin-bottom: 15px; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;">🏢 Empresa</h3>
+                <div style="margin-bottom: 15px;">
+                    <div style="color: #999; font-size: 12px; text-transform: uppercase;">Nombre</div>
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">{{ postulacion.empresa.nombre }}</div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <div style="color: #999; font-size: 12px; text-transform: uppercase;">NIT</div>
+                    <div style="font-size: 18px; font-weight: bold; color: #333;">{{ postulacion.empresa.nit }}</div>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <div style="color: #999; font-size: 12px; text-transform: uppercase;">Dirección</div>
+                    <div style="font-size: 14px; color: #666;">{{ postulacion.empresa.direccion|default:"No registrada" }}</div>
+                </div>
+            </div>
+            <div>
+                <h3 style="color: #2d5016; margin-bottom: 15px; border-bottom: 2px solid #2196F3; padding-bottom: 10px;">📊 Estado de Postulación</h3>
+                <div style="margin-bottom: 20px;">
+                    <div style="color: #999; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;">Estado Actual</div>
+                    {% if postulacion.estado == 'PENDIENTE' %}
+                        <span style="background: #FF9800; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px;">⏳ Pendiente</span>
+                    {% elif postulacion.estado == 'PROCESO_SELECCION_ABIERTO' %}
+                        <span style="background: #4CAF50; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px;">✓ Seleccion Abierto</span>
+                    {% elif postulacion.estado == 'CONTRATO_NO_REGISTRADO' %}
+                        <span style="background: #f44336; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px;">⚠ Contrato no Registrado</span>
+                    {% elif postulacion.estado == 'CONTRATADO' %}
+                        <span style="background: #2E7D32; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px;">🎉 Contratado</span>
+                    {% elif postulacion.estado == 'DISPONIBLE' or not postulacion.estado or postulacion.estado|length == 0 %}
+                        <span style="background: #2196F3; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px;">→ Disponible</span>
+                    {% else %}
+                        <span style="background: #9C27B0; color: white; padding: 10px 15px; border-radius: 5px; font-weight: bold; font-size: 14px;">{{ postulacion.estado }}</span>
+                    {% endif %}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <div style="color: #999; font-size: 12px; text-transform: uppercase;">Fecha Postulación</div>
+                    <div style="font-size: 14px; color: #666;">{{ postulacion.fecha_postulacion|date:"d/m/Y H:i" }}</div>
+                </div>
+                <div>
+                    <div style="color: #999; font-size: 12px; text-transform: uppercase; margin-bottom: 8px;">Respuestas Recibidas</div>
+                    <div style="font-size: 13px; color: #666;">
+                        {% if postulacion.empresa_dio_respuesta %}
+                            <div style="color: #4CAF50;">✓ Empresa respondió</div>
+                        {% else %}
+                            <div style="color: #f44336;">✗ Empresa no respondió</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Observaciones de la empresa -->
+    <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px;">
+        <h3 style="color: #2d5016; margin-bottom: 20px; border-bottom: 2px solid #4CAF50; padding-bottom: 10px;">💬 Observación de la Empresa</h3>
+        {% if postulacion.observacion_empresa %}
+            <div style="background: #f5f5f5; padding: 20px; border-left: 4px solid #4CAF50; border-radius: 5px;">
+                <p style="color: #333; margin: 0; line-height: 1.6;">{{ postulacion.observacion_empresa }}</p>
+            </div>
+        {% else %}
+            <p style="color: #999; font-style: italic;">La empresa aún no ha dejado observaciones.</p>
+        {% endif %}
+    </div>
+
+    <!-- Formulario para agregar observación del aprendiz -->
+    {% if postulacion.estado == 'PENDIENTE' or postulacion.estado == 'PROCESO_SELECCION_ABIERTO' or postulacion.estado == 'CONTRATO_NO_REGISTRADO' %}
+        <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px;">
+            <h3 style="color: #2d5016; margin-bottom: 20px; border-bottom: 2px solid #2196F3; padding-bottom: 10px;">📝 Mi Observación</h3>
+            
+            {% if postulacion.observacion_aprendiz %}
+                <div style="background: #E3F2FD; padding: 20px; border-left: 4px solid #2196F3; border-radius: 5px; margin-bottom: 20px;">
+                    <p style="color: #333; margin: 0; line-height: 1.6;">{{ postulacion.observacion_aprendiz }}</p>
+                </div>
+            {% endif %}
+
+            <form method="POST" style="display: grid; gap: 15px;">
+                {% csrf_token %}
+                <textarea name="observacion" placeholder="Escribe tu observación, comentarios o preguntas..." style="width: 100%; min-height: 120px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; font-family: Arial; font-size: 14px; resize: vertical;">{{ postulacion.observacion_aprendiz }}</textarea>
+                <button type="submit" style="background: #2196F3; color: white; padding: 12px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px;">
+                    💾 Guardar Observación
+                </button>
+                <p style="color: #999; font-size: 12px; margin: 0;">
+                    ⓘ Una vez que guardes y la empresa responda, el estado cambiará a "Disponible".
+                </p>
+            </form>
+        </div>
+    {% endif %}
+
+    <!-- Historial de cambios -->
+    <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px;">
+        <h3 style="color: #2d5016; margin-bottom: 20px; border-bottom: 2px solid #FF9800; padding-bottom: 10px;">📜 Historial de Cambios</h3>
+        
+        {% if historial %}
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                {% for evento in historial %}
+                    <div style="padding: 15px; background: #f9f9f9; border-left: 4px solid #FF9800; border-radius: 5px;">
+                        <div style="color: #666; font-size: 12px; margin-bottom: 5px;">{{ evento.fecha_cambio|date:"d/m/Y H:i" }}</div>
+                        <div style="color: #333; font-weight: bold; margin-bottom: 8px;">
+                            {% if evento.estado_anterior %}
+                                {{ evento.estado_anterior }} → {{ evento.estado_nuevo }}
+                            {% else %}
+                                Postulación creada
+                            {% endif %}
+                        </div>
+                        {% if evento.comentario %}
+                            <p style="color: #666; margin: 0; font-size: 13px; line-height: 1.5;">{{ evento.comentario }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #999; font-style: italic;">Sin cambios registrados.</p>
+        {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="{% url 'mis_postulaciones' %}" style="padding: 12px 30px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+            ← Volver a Mis Postulaciones
+        </a>
+    </div>
+</div>
+{% endblock %}

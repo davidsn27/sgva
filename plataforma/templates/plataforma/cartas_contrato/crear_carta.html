@@ -1,0 +1,455 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Crear Carta de Fechas - SGVA{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.aprendiz-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.aprendiz-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.aprendiz-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.aprendiz-details h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.aprendiz-details p {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.form-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    cursor: pointer;
+    margin: 0;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #229954;
+    transform: translateY(-1px);
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.help-text {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: 0.25rem;
+}
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    display: block;
+    padding: 0.75rem;
+    border: 2px dashed #ddd;
+    border-radius: 5px;
+    text-align: center;
+    color: #7f8c8d;
+    transition: all 0.3s ease;
+}
+
+.file-upload:hover .file-upload-label {
+    border-color: #3498db;
+    color: #3498db;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .aprendiz-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-file-contract"></i> Crear Carta de Fechas
+        </h1>
+        <p class="page-subtitle">Envía una propuesta de contrato a un aprendiz</p>
+    </div>
+
+    <!-- Información del Aprendiz -->
+    <div class="aprendiz-info">
+        <div class="aprendiz-header">
+            <div class="aprendiz-avatar">
+                {{ aprendiz.nombre.0 }}
+            </div>
+            <div class="aprendiz-details">
+                <h3>{{ aprendiz.nombre }}</h3>
+                <p><i class="fas fa-envelope"></i> {{ aprendiz.correo }}</p>
+                <p><i class="fas fa-phone"></i> {{ aprendiz.telefono }}</p>
+                <p><i class="fas fa-graduation-cap"></i> {{ aprendiz.programa_formacion }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario de Carta -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Fechas del Contrato -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-calendar"></i> Fechas de la Carta
+            </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="fecha_inicio">Fecha de Inicio *</label>
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="fecha_fin">Fecha de Fin *</label>
+                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parámetros del Contrato -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-file-alt"></i> Parámetros del Contrato
+            </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="tipo_contrato">Tipo de Contrato *</label>
+                    <select name="tipo_contrato" id="tipo_contrato" class="form-control" required>
+                        {% for tipo, label in tipos_contrato %}
+                        <option value="{{ tipo }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="salario_propuesto">Salario Mensual ($) *</label>
+                    <input type="number" name="salario_propuesto" id="salario_propuesto" class="form-control" 
+                           step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="cargo_ofrecido">Cargo Ofrecido *</label>
+                    <input type="text" name="cargo_ofrecido" id="cargo_ofrecido" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="lugar_trabajo">Lugar de Trabajo *</label>
+                    <input type="text" name="lugar_trabajo" id="lugar_trabajo" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="descripcion_actividades">Descripción de Actividades *</label>
+                <textarea name="descripcion_actividades" id="descripcion_actividades" class="form-control" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="horario_trabajo">Horario de Trabajo *</label>
+                <input type="text" name="horario_trabajo" id="horario_trabajo" class="form-control" required>
+            </div>
+        </div>
+
+        <!-- Beneficios Adicionales -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-gift"></i> Beneficios Adicionales
+            </h2>
+            <div class="form-grid">
+                <div class="checkbox-group">
+                    <input type="checkbox" name="seguro_medico" id="seguro_medico">
+                    <label for="seguro_medico">Seguro Médico</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="transporte" id="transporte">
+                    <label for="transporte">Auxilio de Transporte</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="alimentacion" id="alimentacion">
+                    <label for="alimentacion">Auxilio de Alimentación</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="beneficios">Beneficios Adicionales</label>
+                <textarea name="beneficios" id="beneficios" class="form-control" 
+                          placeholder="Describe otros beneficios ofrecidos..."></textarea>
+            </div>
+        </div>
+
+        <!-- Documentos -->
+        <div class="form-section">
+            <h2 class="section-title">
+                <i class="fas fa-paperclip"></i> Documentos Adjuntos
+            </h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="carta_propuesta">Carta de Propuesta</label>
+                    <div class="file-upload">
+                        <input type="file" name="carta_propuesta" id="carta_propuesta" 
+                               accept=".pdf,.doc,.docx">
+                        <label for="carta_propuesta" class="file-upload-label">
+                            <i class="fas fa-upload"></i> Seleccionar archivo (PDF, DOC, DOCX)
+                        </label>
+                    </div>
+                    <div class="help-text">Sube la carta oficial de propuesta de la empresa</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="documento_empresa">Documentación Adicional</label>
+                    <div class="file-upload">
+                        <input type="file" name="documento_empresa" id="documento_empresa" 
+                               accept=".pdf,.doc,.docx,.zip">
+                        <label for="documento_empresa" class="file-upload-label">
+                            <i class="fas fa-upload"></i> Seleccionar archivo (PDF, DOC, DOCX, ZIP)
+                        </label>
+                    </div>
+                    <div class="help-text">Documentación adicional de la empresa</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> Enviar Carta de Fechas
+            </button>
+            <a href="{% url 'lista_cartas_contrato' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+// Validación de fechas
+document.getElementById('fecha_inicio').addEventListener('change', function() {
+    const fechaInicio = new Date(this.value);
+    const fechaFin = new Date(document.getElementById('fecha_fin').value);
+    
+    if (fechaFin && fechaFin <= fechaInicio) {
+        this.setCustomValidity('La fecha de fin debe ser posterior a la fecha de inicio');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+document.getElementById('fecha_fin').addEventListener('change', function() {
+    const fechaFin = new Date(this.value);
+    const fechaInicio = new Date(document.getElementById('fecha_inicio').value);
+    
+    if (fechaInicio && fechaFin <= fechaInicio) {
+        this.setCustomValidity('La fecha de fin debe ser posterior a la fecha de inicio');
+    } else {
+        this.setCustomValidity('');
+    }
+});
+
+// Actualizar nombre de archivo seleccionado
+document.querySelectorAll('input[type="file"]').forEach(input => {
+    input.addEventListener('change', function() {
+        const label = this.nextElementSibling;
+        if (this.files && this.files[0]) {
+            label.innerHTML = `<i class="fas fa-file"></i> ${this.files[0].name}`;
+        } else {
+            label.innerHTML = `<i class="fas fa-upload"></i> Seleccionar archivo`;
+        }
+    });
+});
+</script>
+{% endblock %}

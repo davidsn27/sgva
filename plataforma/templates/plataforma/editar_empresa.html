@@ -1,0 +1,192 @@
+{% extends "plataforma/base.html" %}
+
+{% block content %}
+<style>
+    .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .panel {
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        padding: 1.75rem;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 1.25rem;
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #006837;
+    }
+
+    .actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .btnx {
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-weight: 900;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #FFFFFF;
+        white-space: nowrap;
+    }
+
+    .btnx.primary { background: #006837; }
+    .btnx.primary:hover { background: #00592f; }
+    .btnx.secondary { background: #6c757d; }
+    .btnx.secondary:hover { background: #5a6268; }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .full { grid-column: 1 / -1; }
+
+    label {
+        display: block;
+        font-weight: 900;
+        color: #212529;
+        margin-bottom: 0.5rem;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 0.75rem 0.9rem;
+        border: 2px solid #e1e8ed;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        background: #FFFFFF;
+        outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #006837;
+        box-shadow: 0 0 0 3px rgba(0, 104, 55, 0.12);
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .footer {
+        margin-top: 1.25rem;
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
+    @media (max-width: 800px) {
+        .wrap { padding: 1rem; }
+        .grid { grid-template-columns: 1fr; }
+        .header { flex-direction: column; }
+        .actions { justify-content: flex-start; }
+        .footer { justify-content: stretch; }
+        .footer .btnx { flex: 1; justify-content: center; }
+    }
+</style>
+
+<div class="wrap">
+    <div class="panel">
+        <div class="header">
+            <div>
+                <h1>✏️ Editar empresa</h1>
+            </div>
+            <div class="actions">
+                <a href="{% url 'detalle_empresa' empresa.id %}" class="btnx secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="grid">
+                <div>
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" type="text" name="nombre" value="{{ empresa.nombre }}" required>
+                </div>
+
+                <div>
+                    <label for="nit">NIT</label>
+                    <input id="nit" type="text" name="nit" value="{{ empresa.nit }}" required>
+                </div>
+
+                <div>
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" required>
+                        {% for value, label in empresa.ESTADOS %}
+                            <option value="{{ value }}" {% if (empresa.estado == value) or (not empresa.estado and value == 'DISPONIBLE') %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="capacidad_cupos">Capacidad de cupos</label>
+                    <input id="capacidad_cupos" type="number" name="capacidad_cupos" min="0" value="{{ empresa.capacidad_cupos }}">
+                </div>
+
+                <div class="full">
+                    <label for="direccion">Dirección</label>
+                    <input id="direccion" type="text" name="direccion" value="{{ empresa.direccion }}">
+                </div>
+
+                <div>
+                    <label for="telefono_contacto">Teléfono de contacto</label>
+                    <input id="telefono_contacto" type="text" name="telefono_contacto" value="{{ empresa.telefono_contacto }}">
+                </div>
+
+                <div>
+                    <label for="correo_contacto">Correo de contacto</label>
+                    <input id="correo_contacto" type="email" name="correo_contacto" value="{{ empresa.correo_contacto }}">
+                </div>
+
+                <div class="full">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion">{{ empresa.descripcion }}</textarea>
+                </div>
+
+                <div class="full">
+                    <label for="observacion">Observación</label>
+                    <textarea id="observacion" name="observacion">{{ empresa.observacion }}</textarea>
+                </div>
+            </div>
+
+            <div class="footer">
+                <button type="submit" class="btnx primary">
+                    <i class="fas fa-save"></i> Guardar cambios
+                </button>
+                <a href="{% url 'detalle_empresa' empresa.id %}" class="btnx secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

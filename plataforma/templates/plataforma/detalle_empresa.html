@@ -1,0 +1,245 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}{{ empresa.nombre }}{% endblock %}
+
+{% block content %}
+<style>
+    .page-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .page-header {
+        background: #FFFFFF;
+        border-radius: 16px;
+        padding: 1.5rem 1.75rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .title-block h1 {
+        margin: 0;
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: #006837;
+        line-height: 1.2;
+    }
+
+    .title-meta {
+        margin-top: 0.5rem;
+        color: #6c757d;
+        font-weight: 600;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        background: rgba(0, 104, 55, 0.08);
+        color: #006837;
+    }
+
+    .estado {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+    }
+
+    .estado.disponible { background: #006837; }
+    .estado.seleccion { background: #FF6B00; }
+    .estado.inactiva { background: #6c757d; }
+
+    .btn-back {
+        background: #6c757d;
+        color: #FFFFFF;
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-weight: 800;
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .btn-back:hover {
+        background: #5a6268;
+    }
+
+    .btn-edit {
+        background: #FF6B00;
+        color: #FFFFFF;
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-weight: 800;
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .btn-edit:hover {
+        background: #e55f00;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.9fr;
+        gap: 1.25rem;
+    }
+
+    .cardx {
+        background: #FFFFFF;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        padding: 1.5rem 1.75rem;
+    }
+
+    .cardx h2 {
+        margin: 0 0 1rem 0;
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: #006837;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .kv {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 0.75rem 1rem;
+        align-items: start;
+    }
+
+    .k {
+        color: #6c757d;
+        font-weight: 800;
+    }
+
+    .v {
+        color: #212529;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+    .v.muted {
+        font-weight: 600;
+        color: #6c757d;
+    }
+
+    .note {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        background: rgba(255, 107, 0, 0.08);
+        border-left: 4px solid #FF6B00;
+        color: #212529;
+        font-weight: 650;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+        .page-wrap { padding: 1rem; }
+        .content-grid { grid-template-columns: 1fr; }
+        .kv { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="page-wrap">
+    <div class="page-header">
+        <div class="title-block">
+            <h1>🏢 {{ empresa.nombre }}</h1>
+            <div class="title-meta">
+                <span class="pill">NIT: {{ empresa.nit }}</span>
+                {% if not empresa.estado or empresa.estado == "DISPONIBLE" %}
+                    <span class="estado disponible">Disponible</span>
+                {% elif empresa.estado == "PROCESO_SELECCION" %}
+                    <span class="estado seleccion">En selección</span>
+                {% elif empresa.estado == "CONTRATO_NULO" %}
+                    <span class="estado inactiva">Inactiva</span>
+                {% else %}
+                    <span class="estado inactiva">{{ empresa.estado }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:flex-end;">
+            <a href="{% url 'editar_empresa' empresa.id %}" class="btn-edit">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a href="{% url 'lista_empresas' %}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver a empresas
+            </a>
+        </div>
+    </div>
+
+    <div class="content-grid">
+        <div class="cardx">
+            <h2><i class="fas fa-info-circle" style="color:#FF6B00"></i> Información de la empresa</h2>
+            <div class="kv">
+                <div class="k">Nombre</div>
+                <div class="v">{{ empresa.nombre }}</div>
+
+                <div class="k">NIT</div>
+                <div class="v">{{ empresa.nit }}</div>
+
+                <div class="k">Dirección</div>
+                <div class="v {% if not empresa.direccion %}muted{% endif %}">
+                    {% if empresa.direccion %}{{ empresa.direccion }}{% else %}No registrada{% endif %}
+                </div>
+
+                <div class="k">Descripción</div>
+                <div class="v {% if not empresa.descripcion %}muted{% endif %}">
+                    {% if empresa.descripcion %}{{ empresa.descripcion }}{% else %}No registrada{% endif %}
+                </div>
+            </div>
+
+            {% if empresa.observacion %}
+                <div class="note">
+                    <strong>Observación:</strong><br>
+                    {{ empresa.observacion }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="cardx">
+            <h2><i class="fas fa-address-book" style="color:#FF6B00"></i> Contacto y cupos</h2>
+            <div class="kv">
+                <div class="k">Teléfono</div>
+                <div class="v {% if not empresa.telefono_contacto %}muted{% endif %}">
+                    {% if empresa.telefono_contacto %}{{ empresa.telefono_contacto }}{% else %}No registrado{% endif %}
+                </div>
+
+                <div class="k">Correo</div>
+                <div class="v {% if not empresa.correo_contacto %}muted{% endif %}">
+                    {% if empresa.correo_contacto %}{{ empresa.correo_contacto }}{% else %}No registrado{% endif %}
+                </div>
+
+                <div class="k">Cupos (capacidad)</div>
+                <div class="v">{{ empresa.capacidad_cupos }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

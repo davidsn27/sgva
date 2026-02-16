@@ -1,0 +1,432 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Cartas de Fechas - SGVA{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.filters-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #229954;
+    transform: translateY(-1px);
+}
+
+.btn-warning {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #e67e22;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.cartas-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.cartas-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.carta-card {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.carta-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.carta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.carta-empresa {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1rem;
+}
+
+.carta-estado {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.estado-pendiente {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.estado-aprobada {
+    background: #d4edda;
+    color: #155724;
+}
+
+.estado-rechazada {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.estado-completada {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.carta-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.carta-aprendiz {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.carta-aprendiz h4 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.carta-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.pagination a, .pagination span {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+.pagination a:hover {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.pagination .current {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3498db;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-file-contract"></i> Cartas de Fechas
+        </h1>
+        <p class="page-subtitle">Gestiona las cartas de fechas enviadas a aprendices</p>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-number">{{ cartas|length }}</div>
+            <div class="stat-label">Total Cartas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ cartas|length }}</div>
+            <div class="stat-label">Pendientes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Aprobadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Completadas</div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-section">
+        <h3><i class="fas fa-filter"></i> Filtros</h3>
+        <form method="GET" class="filters-grid">
+            <div class="form-group">
+                <label class="form-label">Estado</label>
+                <select name="estado" class="form-control">
+                    <option value="">Todos los estados</option>
+                    {% for estado, label in estados_cartas %}
+                    <option value="{{ estado }}" {% if request.GET.estado == estado %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">&nbsp;</label>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Lista de Cartas -->
+    <div class="cartas-section">
+        <h3><i class="fas fa-list"></i> Cartas Enviadas</h3>
+        
+        {% if cartas %}
+        <div class="cartas-grid">
+            {% for carta in cartas %}
+            <div class="carta-card">
+                <div class="carta-header">
+                    <div class="carta-empresa">{{ empresa.nombre }}</div>
+                    <div class="carta-estado estado-{{ carta.estado|lower }}">
+                        {{ carta.get_estado_display }}
+                    </div>
+                </div>
+                
+                <div class="carta-aprendiz">
+                    <h4><i class="fas fa-user-graduate"></i> {{ carta.aprendiz.nombre }}</h4>
+                    <p>{{ carta.aprendiz.correo }}</p>
+                </div>
+                
+                <div class="carta-info">
+                    <div class="info-item">
+                        <span class="info-label">Cargo</span>
+                        <span class="info-value">{{ carta.cargo_ofrecido }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Salario</span>
+                        <span class="info-value">${{ carta.salario_propuesto|floatformat:0 }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duración</span>
+                        <span class="info-value">{{ carta.duracion_meses }} meses</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Solicitud</span>
+                        <span class="info-value">{{ carta.fecha_solicitud|date:"d/m/Y" }}</span>
+                    </div>
+                </div>
+                
+                <div class="carta-actions">
+                    <a href="{% url 'detalle_carta_contrato' carta.id %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-eye"></i> Ver
+                    </a>
+                    {% if carta.puede_ser_editada %}
+                    <a href="{% url 'editar_carta_contrato' carta.id %}" class="btn btn-warning btn-sm">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Paginación -->
+        {% if cartas.has_other_pages %}
+        <div class="pagination">
+            {% if cartas.has_previous %}
+            <a href="?pagina={{ cartas.previous_page_number }}{% if request.GET.estado %}&estado={{ request.GET.estado }}{% endif %}">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% endif %}
+            
+            <span class="current">{{ cartas.number }}</span>
+            
+            {% if cartas.has_next %}
+            <a href="?pagina={{ cartas.next_page_number }}{% if request.GET.estado %}&estado={{ request.GET.estado }}{% endif %}">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div style="text-align: center; padding: 3rem; color: #7f8c8d;">
+            <i class="fas fa-file-contract" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+            <h4>No hay cartas de contrato</h4>
+            <p>No has enviado ninguna carta de contrato a aprendices.</p>
+            <a href="{% url 'lista_aprendices' %}" class="btn btn-primary">
+                <i class="fas fa-user-graduate"></i> Ver Aprendices
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

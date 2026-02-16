@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGVA - Sistema de Gestión de Vinculación de Aprendices</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-logo">
+                    <i class="fas fa-graduation-cap"></i> SGVA
+                </div>
+                <div class="navbar-menu">
+                    <a href="#" class="nav-link" onclick="goToPage('dashboard')">Dashboard</a>
+                    <a href="#" class="nav-link" onclick="goToPage('postulaciones')">Postulaciones</a>
+                    <a href="#" class="nav-link" onclick="goToPage('analytics')">Analytics</a>
+                    <button class="nav-btn logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Salir
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Login Page -->
+            <div id="login-page" class="page active">
+                <div class="login-container">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <h1>SGVA</h1>
+                            <p>Sistema de Gestión de Vinculación</p>
+                        </div>
+                        
+                        <form class="login-form" onsubmit="handleLogin(event)">
+                            <div class="form-group">
+                                <label>Usuario o Email</label>
+                                <input type="text" id="username" placeholder="Ingresa tu usuario" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Contraseña</label>
+                                <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary w-full">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </button>
+                        </form>
+                        
+                        <div class="login-footer">
+                            <p>O inicia sesión con:</p>
+                            <div class="oauth-buttons">
+                                <button class="oauth-btn google" onclick="oauthLogin('google')">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                                <button class="oauth-btn microsoft" onclick="oauthLogin('microsoft')">
+                                    <i class="fab fa-microsoft"></i> Microsoft
+                                </button>
+                            </div>
+                            <p class="register-link">
+                                ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page">
+                <div class="dashboard">
+                    <div class="dashboard-header">
+                        <h1>Dashboard</h1>
+                        <p id="user-info">Bienvenido</p>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">Total Postulaciones</div>
+                                <div id="stat-postulaciones" class="stat-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">Aceptadas</div>
+                                <div id="stat-aceptadas" class="stat-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon yellow">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">Pendientes</div>
+                                <div id="stat-pendientes" class="stat-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">Mi Calificación</div>
+                                <div id="stat-rating" class="stat-value">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Postulations -->
+                    <div class="dashboard-section">
+                        <div class="section-header">
+                            <h2>Postulaciones Recientes</h2>
+                            <a href="#" class="link" onclick="goToPage('postulaciones')">Ver todas →</a>
+                        </div>
+                        <div id="recent-postulaciones" class="postulations-list">
+                            <div class="loading">Cargando postulaciones...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Postulaciones Page -->
+            <div id="postulaciones-page" class="page">
+                <div class="page-header">
+                    <h1>Gestión de Postulaciones</h1>
+                    <p>Revisa y gestiona todas las postulaciones recibidas</p>
+                </div>
+
+                <div class="filters-container">
+                    <div class="filters">
+                        <input type="text" id="search-input" placeholder="🔍 Buscar por nombre o empresa..." class="filter-input">
+                        <select id="estado-filter" class="filter-select">
+                            <option value="">📋 Todos los estados</option>
+                            <option value="PENDIENTE">⏳ Pendiente</option>
+                            <option value="SELECCIONADO">✅ Seleccionado</option>
+                            <option value="RECHAZADO">❌ Rechazado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="postulaciones-container" class="postulations-container">
+                    <div class="loading">Cargando postulaciones...</div>
+                </div>
+            </div>
+
+            <!-- Analytics Page -->
+            <div id="analytics-page" class="page">
+                <div class="page-header">
+                    <h1>Analytics</h1>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="chart-container">
+                        <h3>Postulaciones por Estado</h3>
+                        <div id="chart-estados" class="chart">
+                            <canvas id="chart-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Conversión de Postulaciones</h3>
+                        <div class="metric">
+                            <div class="metric-label">Tasa de Conversión</div>
+                            <div id="conversion-rate" class="metric-value">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3>Estadísticas Generales</h3>
+                        <div id="general-stats" class="stats-list">
+                            <div class="stat-item">
+                                <span>Total Aprendices</span>
+                                <strong id="total-aprendices">0</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Total Empresas</span>
+                                <strong id="total-empresas">0</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

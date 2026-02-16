@@ -1,0 +1,19 @@
+{% autoescape off %}
+Hola {{ usuario_nombre }},
+
+Recordatorio importante: Tienes postulaciones que están próximas a vencer.
+
+Las siguientes postulaciones se cierran en los próximos días:
+
+{% for postulacion in postulaciones %}
+- {{ postulacion.empresa }}: Vence el {{ postulacion.fecha_vencimiento }}
+{% endfor %}
+
+Si estás interesado en estas oportunidades, asegúrate de responder antes de que se cierren.
+
+Para revisar todas tus postulaciones:
+{{ url }}
+
+Saludos cordiales,
+SGVA Team
+{% endautoescape %}

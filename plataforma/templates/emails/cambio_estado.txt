@@ -1,0 +1,22 @@
+{% autoescape off %}
+Hola {{ usuario_nombre }},
+
+El estado de tu postulación ha cambiado.
+
+Empresa/Aprendiz: {{ otra_parte_nombre }}
+Estado anterior: {{ estado_anterior }}
+Nuevo estado: {{ estado_nuevo }}
+Fecha: {{ fecha }}
+
+{% if estado_nuevo == "SELECCIONADO" %}
+¡Felicidades! Has sido seleccionado para esta oportunidad. Por favor, revisa los detalles de la empresa y ponte en contacto si es necesario.
+{% elif estado_nuevo == "RECHAZADO" %}
+Lamentablemente, esta vez no fuiste seleccionado. Pero no desistas, existen muchas más oportunidades. ¡Continúa postulándote!
+{% endif %}
+
+Para más detalles, ingresa a tu dashboard:
+{{ url }}
+
+Saludos cordiales,
+SGVA Team
+{% endautoescape %}

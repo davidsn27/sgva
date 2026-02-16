@@ -1,0 +1,15 @@
+[MASTER]
+ignore=venv,.venv,migrations,__pycache__
+
+[FORMAT]
+max-line-length=88
+
+[DESIGN]
+max-attributes=10
+
+[MESSAGES CONTROL]
+disable=
+    line-too-long,
+    blank-line-contains-whitespace,
+    trailing-whitespace,
+    missing-docstring,

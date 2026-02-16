@@ -1,0 +1,176 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}{{ aprendiz.nombre }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>👤 {{ aprendiz.nombre }}</h2>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'editar_aprendiz' aprendiz.id %}" class="btn btn-warning" style="padding: 10px 15px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px;">✏️ Editar</a>
+            <a href="{% url 'lista_aprendices' %}" class="btn btn-secondary">Volver a aprendices</a>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+    <div class="card">
+        <h3>Informacion Personal</h3>
+        <p><strong>ID:</strong> {{ aprendiz.id }}</p>
+        <p><strong>Nombre:</strong> {{ aprendiz.nombre }}</p>
+        <p><strong>Correo:</strong> <a href="mailto:{{ aprendiz.correo }}" style="color: #007bff;">{{ aprendiz.correo }}</a></p>
+        <p><strong>Telefono:</strong> <a href="tel:{{ aprendiz.telefono }}" style="color: #007bff;">{{ aprendiz.telefono }}</a></p>
+        
+        {% if aprendiz.observacion %}
+        <div style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 15px;">
+            <p><strong>Observacion:</strong><br>{{ aprendiz.observacion }}</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="card">        <h3>Informacion Academica</h3>
+        <p><strong>Ficha:</strong> {{ aprendiz.ficha|default:"No registrada" }}</p>
+        <p><strong>Programa de Formacion:</strong> {{ aprendiz.programa_formacion|default:"No registrado" }}</p>
+        
+        <div style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 15px;">
+            <p><strong>Ultima Actividad:</strong></p>
+            <p style="margin-top: 5px; color: #666;">{{ aprendiz.fecha_ultima_actividad|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+    <div style="grid-column: 1 / -1; background: #ffffff; border: 1px solid #cfd8dc; border-radius: 10px; padding: 18px; box-shadow: 0 6px 18px rgba(16,24,40,0.06);">
+        <h3 style="margin-top: 0;">Estado y Empresa</h3>
+        <div style="display: flex; gap: 18px; align-items: flex-start;">
+            <div style="flex: 1;">
+                <p><strong>Estado:</strong></p>
+                {% if not aprendiz.estado or aprendiz.estado|length == 0 or aprendiz.estado == "DISPONIBLE" %}
+                    <span class="badge badge-primary">DISPONIBLE</span>
+                    <p style="color: #0056b3; margin-top: 5px;">Aprendiz sin asignar.</p>
+                {% elif aprendiz.estado == "PROCESO_SELECCION" %}
+                    <span class="badge badge-warning">PROCESO SELECCION</span>
+                    <p style="color: #856404; margin-top: 5px;">En proceso de seleccion.</p>
+                {% elif aprendiz.estado == "PROCESO_SELECCION_ABIERTO" %}
+                    <span class="badge" style="background-color: #FF9800; color: white; padding: 6px 12px; border-radius: 16px;">SELECCION ABIERTO</span>
+                    <p style="color: #856404; margin-top: 5px;">En proceso de seleccion abierto.</p>
+                {% elif aprendiz.estado == "CONTRATO_NO_REGISTRADO" %}
+                    <span style="background: #c62828; color: #fff; padding: 6px 12px; border-radius: 16px; font-weight: 600; font-size: 12px; display: inline-block;">CONTRATO NO REGISTRADO</span>
+                    <p style="color: #721c24; margin-top: 8px;">Contrato no registrado.</p>
+                {% elif aprendiz.estado == "CONTRATADO" %}
+                    <span class="badge badge-success">CONTRATADO</span>
+                    <p style="color: #155724; margin-top: 5px;">Aprendiz con contrato vigente.</p>
+                {% elif aprendiz.estado == "INHABILITADO_POR_ACTUALIZACION" %}
+                    <span class="badge" style="background-color: #999; color: white; padding: 6px 12px; border-radius: 16px;">INHABILITADO</span>
+                    <p style="color: #666; margin-top: 5px;">Aprendiz inhabilitado por falta de actualizacion.</p>
+                {% else %}
+                    <span class="badge badge-secondary">{{ aprendiz.estado }}</span>
+                {% endif %}
+            </div>
+
+            <div style="flex: 1;">
+                <p><strong>Empresa en proceso/seleccionada:</strong></p>
+                {% if empresa_proceso and aprendiz.estado != "DISPONIBLE" and aprendiz.estado != "INHABILITADO_POR_ACTUALIZACION" %}
+                    <p style="color: #006837; margin: 0;">
+                        <a href="{% url 'detalle_empresa' empresa_proceso.id %}" style="color: inherit; text-decoration: none; font-weight: 600;">{{ empresa_proceso.nombre }}</a>
+                        <a href="{% url 'detalle_empresa' empresa_proceso.id %}" class="btn btn-info" style="background-color: #2196F3; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 14px; margin-left: 10px;">Informar Empresa</a>
+                    </p>
+                {% else %}
+                    <p style="color: #999; margin: 0;">Sin empresa en proceso o seleccionada</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card" style="border: 1px solid #cfd8dc; border-radius: 12px; padding: 18px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); background: #ffffff;">
+    <h3 style="border-bottom: 3px solid #4CAF50; padding-bottom: 15px; margin-bottom: 25px;">📋 Historial de Postulaciones</h3>
+    {% if postulaciones %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;">
+        {% for postulacion in postulaciones %}
+        <div style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                <div style="flex: 1;">
+                    <h4 style="margin: 0 0 5px 0; color: #1a237e; font-size: 16px;">
+                        <a href="{% url 'detalle_empresa' postulacion.empresa.id %}" style="color: inherit; text-decoration: none;">
+                            🏢 {{ postulacion.empresa.nombre }}
+                        </a>
+                    </h4>
+                    <small style="color: #666;">Empresa</small>
+                </div>
+                <div>
+                    {% if postulacion.estado == "PENDIENTE" %}
+                        <span style="background: #FF9800; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">⏳ EN PROCESO</span>
+                    {% elif postulacion.estado == "PROCESO_SELECCION_ABIERTO" %}
+                        <span style="background: #4CAF50; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">✓ ABIERTO</span>
+                    {% elif postulacion.estado == "CONTRATO_NO_REGISTRADO" %}
+                        <span style="background: #f44336; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">⚠ NO REG</span>
+                    {% elif postulacion.estado == "CONTRATADO" %}
+                        <span style="background: #2E7D32; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">🎉 CONTRATADO</span>
+                    {% elif postulacion.estado == "DISPONIBLE" %}
+                        <span style="background: #9E9E9E; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">↺ DISPONIBLE</span>
+                    {% else %}
+                        <span style="background: #999; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">{{ postulacion.estado }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 12px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                    <div style="border-right: 1px solid #e0e0e0; padding-right: 12px;">
+                        <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">📅 Postulación</div>
+                        <div style="font-size: 14px; font-weight: bold; color: #1a237e;">{{ postulacion.fecha_postulacion|date:"d/m/Y" }}</div>
+                        <div style="font-size: 12px; color: #999; margin-top: 2px;">{{ postulacion.fecha_postulacion|time:"H:i" }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">⏳ Días transcurridos</div>
+                        {% if postulacion.dias_desde_postulacion != None %}
+                            <div style="font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px; border-radius: 4px; text-align: center;">{{ postulacion.dias_desde_postulacion }}</div>
+                            <div style="font-size: 12px; color: #999; text-align: center; margin-top: 2px;">días</div>
+                        {% else %}
+                            <div style="font-size: 12px; color: #999;">Calculando...</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if postulacion.estado == "PENDIENTE" %}
+                <div style="border-top: 1px solid #e0e0e0; padding-top: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold;">🕐 Plazo de 15 días</div>
+                        {% if postulacion.vencida %}
+                            <span style="background: #ff4444; color: white; padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: bold;">⚠ VENCIDA</span>
+                        {% elif postulacion.dias_restantes|default:0 <= 3 %}
+                            <span style="background: #FF9800; color: white; padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: bold;">⏰ POR VENCER</span>
+                        {% endif %}
+                    </div>
+                    <div style="width: 100%; background: #e0e0e0; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
+                        <div style="background: linear-gradient(90deg, #4CAF50 0%, #FFC107 50%, #f44336 100%); height: 100%; width: {{ postulacion.porcentaje_progreso }}%; border-radius: 3px;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <small style="color: #666;">📆 Vence: <strong>{{ postulacion.fecha_vencimiento|date:"d/m/Y" }}</strong></small>
+                        {% if postulacion.vencida %}
+                            <strong style="color: #f44336;">Vencida hace {{ postulacion.dias_restantes|default:0 }} días</strong>
+                        {% elif postulacion.dias_restantes|default:0 >= 0 %}
+                            <strong style="color: #4CAF50;">{{ postulacion.dias_restantes|default:0 }} días</strong>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 40px 20px; border-radius: 8px; text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 15px;">📋</div>
+        <h3 style="color: #1a237e; margin: 10px 0;">Sin postulaciones registradas</h3>
+        <p style="color: #666; margin: 10px 0; font-size: 16px;">Este aprendiz aún no ha realizado postulaciones a empresas.</p>
+        <div style="margin-top: 20px;">
+            <a href="{% url 'lista_empresas' %}" class="btn btn-primary" style="background-color: #4CAF50; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold;">
+                🔍 Explorar Oportunidades
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

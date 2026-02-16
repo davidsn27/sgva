@@ -1,0 +1,478 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Portal Funcionarios - SGVA{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ESTILOS PORTAL FUNCIONARIOS */
+.portal-container {
+    min-height: calc(100vh - 80px);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.portal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.portal-content {
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header Informativo */
+.portal-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+.portal-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.portal-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Módulo de Estadísticas */
+.stats-module {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 2.5rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+.module-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.module-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.module-title i {
+    color: #667eea;
+}
+
+.view-all-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.view-all-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Stats Interactivas */
+.stats-interactive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-item {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-color: #667eea;
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+}
+
+.stat-item:hover::before {
+    opacity: 0.1;
+}
+
+.stat-item:hover .stat-number,
+.stat-item:hover .stat-label,
+.stat-item:hover .stat-icon {
+    color: #667eea;
+    transform: scale(1.1);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    color: #667eea;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+/* Sección Informativa */
+.info-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeInUp 1.2s ease-out 0.4s both;
+}
+
+.info-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.info-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-3px);
+}
+
+.info-card h4 {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.info-card ul {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.info-card li {
+    margin-bottom: 0.5rem;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .portal-content {
+        padding: 2rem 1rem;
+    }
+    
+    .portal-title {
+        font-size: 2.5rem;
+    }
+    
+    .portal-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .stats-interactive {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Funcionalidad de filtros para las estadísticas interactivas
+    const statItems = document.querySelectorAll('.stat-item');
+    
+    statItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const filterType = this.getAttribute('data-filter');
+            const filterValue = this.getAttribute('data-value');
+            
+            // Animación de clic
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1.05)';
+            }, 150);
+            
+            // Redirigir al dashboard con el filtro aplicado
+            if (filterType && filterValue) {
+                const dashboardUrl = `{% url 'dashboard_estadisticas' %}?filter=${filterType}&value=${filterValue}`;
+                window.location.href = dashboardUrl;
+            } else {
+                // Si no hay filtro, ir al dashboard normal
+                window.location.href = `{% url 'dashboard_estadisticas' %}`;
+            }
+        });
+        
+        // Efecto hover mejorado
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.08) rotate(1deg)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="portal-container">
+    <div class="portal-content">
+        <!-- Header Informativo -->
+        <div class="portal-header">
+            <h1 class="portal-title">
+                <i class="fas fa-user-tie"></i> Portal Funcionarios
+            </h1>
+            <p class="portal-subtitle">
+                Bienvenido al sistema de gestión de vinculación laboral. Accede a las estadísticas y herramientas administrativas para monitorear y gestionar el proceso de vinculación de aprendices con empresas.
+            </p>
+        </div>
+
+        <!-- Módulo de Estadísticas -->
+        <div class="stats-module">
+            <div class="module-header">
+                <h2 class="module-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Estadísticas Rápidas
+                </h2>
+                <a href="{% url 'dashboard_estadisticas' %}" class="view-all-btn">
+                    <i class="fas fa-expand"></i> Ver Dashboard Completo
+                </a>
+            </div>
+            
+            <div class="stats-interactive">
+                <div class="stat-item" data-filter="aprendices" data-value="DISPONIBLE">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Aprendices Disponibles</div>
+                </div>
+
+                <div class="stat-item" data-filter="aprendices" data-value="CONTRATADO">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Aprendices Contratados</div>
+                </div>
+
+                <div class="stat-item" data-filter="empresas" data-value="ACTIVA">
+                    <div class="stat-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Empresas Activas</div>
+                </div>
+
+                <div class="stat-item" data-filter="postulaciones" data-value="PENDIENTE">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Postulaciones Pendientes</div>
+                </div>
+
+                <div class="stat-item" data-filter="postulaciones" data-value="CONTRATADO">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">Postulaciones Aprobadas</div>
+                </div>
+
+                <div class="stat-item" data-filter="general" data-value="all">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-number">+</div>
+                    <div class="stat-label">Ver Todas las Estadísticas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Informativa -->
+        <div class="info-section">
+            <div class="info-header">
+                <h3 class="info-title">
+                    <i class="fas fa-info-circle"></i>
+                    Información del Sistema
+                </h3>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>
+                        <i class="fas fa-filter"></i>
+                        Filtros Interactivos
+                    </h4>
+                    <p>
+                        Los números de las estadísticas son botones interactivos. Haz clic en cualquier estadística para filtrar el dashboard completo y ver solo los datos relacionados.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h4>
+                        <i class="fas fa-user-shield"></i>
+                        Acceso Administrativo
+                    </h4>
+                    <ul>
+                        <li><strong>Usuario:</strong> funcionario_test</li>
+                        <li><strong>Contraseña:</strong> funcionario123</li>
+                        <li><strong>Admin:</strong> admin / admin123</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4>
+                        <i class="fas fa-cogs"></i>
+                        Funcionalidades Principales
+                    </h4>
+                    <ul>
+                        <li>Gestión de aprendices y sus estados</li>
+                        <li>Administración de empresas participantes</li>
+                        <li>Seguimiento de postulaciones</li>
+                        <li>Reportes y estadísticas en tiempo real</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4>
+                        <i class="fas fa-database"></i>
+                        Datos del Sistema
+                    </h4>
+                    <ul>
+                        <li>Base de datos SQLite para desarrollo</li>
+                        <li>Datos de prueba pre-cargados</li>
+                        <li>Estados actualizados en tiempo real</li>
+                        <li>Respaldo automático de información</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

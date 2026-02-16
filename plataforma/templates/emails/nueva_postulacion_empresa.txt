@@ -1,0 +1,18 @@
+{% autoescape off %}
+Hola {{ empresa_nombre }},
+
+¡Has recibido una nueva postulación!
+
+Aprendiz: {{ aprendiz_nombre }}
+Programa de Formación: {{ programa }}
+Ficha: {{ ficha }}
+Fecha: {{ fecha }}
+
+El aprendiz ha expresado interés en tu oportunidad. Ingresa a tu dashboard para revisar su perfil y dar una respuesta.
+
+Dashboard:
+{{ url }}
+
+Saludos cordiales,
+SGVA Team
+{% endautoescape %}

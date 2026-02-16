@@ -1,0 +1,89 @@
+{% extends "plataforma/base.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="color: #0f172a; margin-bottom: 1.5rem;">✏️ Editar Aprendiz: {{ aprendiz.nombre }}</h2>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Nombre Completo</label>
+                    <input type="text" name="nombre" value="{{ aprendiz.nombre }}" required>
+                </div>
+
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Tipo de Identificación</label>
+                    <select name="tipo_identificacion">
+                        <option value="CC" {% if aprendiz.tipo_identificacion == 'CC' %}selected{% endif %}>Cédula de Ciudadanía</option>
+                        <option value="TI" {% if aprendiz.tipo_identificacion == 'TI' %}selected{% endif %}>Tarjeta de Identidad</option>
+                        <option value="CE" {% if aprendiz.tipo_identificacion == 'CE' %}selected{% endif %}>Cédula de Extranjería</option>
+                        <option value="PA" {% if aprendiz.tipo_identificacion == 'PA' %}selected{% endif %}>Pasaporte</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Número de Identificación</label>
+                    <input type="text" name="numero_identificacion" value="{{ aprendiz.numero_identificacion }}">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Correo Electrónico</label>
+                    <input type="email" name="correo" value="{{ aprendiz.correo }}" required>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Teléfono</label>
+                    <input type="text" name="telefono" value="{{ aprendiz.telefono }}">
+                </div>
+
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Dirección</label>
+                    <input type="text" name="direccion" value="{{ aprendiz.direccion }}">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Ficha</label>
+                    <input type="text" name="ficha" value="{{ aprendiz.ficha }}">
+                </div>
+                
+                <div style="grid-column: span 2;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Programa de Formación</label>
+                    <input type="text" name="programa_formacion" value="{{ aprendiz.programa_formacion }}">
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Estado</label>
+                    <select name="estado">
+                        <option value="DISPONIBLE" {% if aprendiz.estado == 'DISPONIBLE' %}selected{% endif %}>Disponible</option>
+                        <option value="PROCESO_SELECCION" {% if aprendiz.estado == 'PROCESO_SELECCION' %}selected{% endif %}>Proceso de Selección</option>
+                        <option value="PROCESO_SELECCION_ABIERTO" {% if aprendiz.estado == 'PROCESO_SELECCION_ABIERTO' %}selected{% endif %}>Proceso Abierto</option>
+                        <option value="CONTRATADO" {% if aprendiz.estado == 'CONTRATADO' %}selected{% endif %}>Contratado</option>
+                        <option value="CONTRATO_NO_REGISTRADO" {% if aprendiz.estado == 'CONTRATO_NO_REGISTRADO' %}selected{% endif %}>Contrato No Registrado</option>
+                        <option value="INHABILITADO_POR_ACTUALIZACION" {% if aprendiz.estado == 'INHABILITADO_POR_ACTUALIZACION' %}selected{% endif %}>Inhabilitado</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Empresa Actual</label>
+                    <select name="empresa_actual">
+                        <option value="">-- Ninguna --</option>
+                        {% for empresa in empresas %}
+                            <option value="{{ empresa.id }}" {% if aprendiz.empresa_actual_id == empresa.id %}selected{% endif %}>
+                                {{ empresa.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <a href="{% url 'detalle_aprendiz' aprendiz.id %}" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

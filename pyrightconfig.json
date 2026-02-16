@@ -1,0 +1,14 @@
+{
+  "include": ["plataforma", "sgva"],
+  "exclude": ["venv", "node_modules", "**/__pycache__"],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "off",
+  "venvPath": ".",
+  "venv": "venv",
+  "reportGeneralTypeIssues": false,
+  "reportUndefinedVariable": false,
+  "reportMissingImports": false,
+  "reportUnusedImport": false,
+  "reportIncompatibleMethodOverride": false,
+  "reportIncompatibleVariableOverride": false
+}

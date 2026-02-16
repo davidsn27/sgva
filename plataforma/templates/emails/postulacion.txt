@@ -1,0 +1,16 @@
+{% autoescape off %}
+Hola {{ aprendiz_nombre }},
+
+¡Tu postulación ha sido enviada correctamente!
+
+Empresa: {{ empresa_nombre }}
+Fecha: {{ fecha }}
+
+Ahora espera la respuesta de la empresa. Mientras tanto, puedes explorar otras oportunidades.
+
+Para ver el estado de tu postulación, ingresa a tu dashboard:
+{{ url }}
+
+Saludos cordiales,
+SGVA Team
+{% endautoescape %}

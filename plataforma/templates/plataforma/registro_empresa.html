@@ -1,0 +1,286 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Registro de Empresa - SGVA{% endblock %}
+
+{% block content %}
+<style>
+    .registro-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .registro-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .registro-header h1 {
+        color: #006837;
+        margin-bottom: 10px;
+    }
+
+    .registro-header p {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="number"]:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: #006837;
+        box-shadow: 0 0 0 3px rgba(0, 104, 55, 0.12);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .help-text {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .form-full {
+        grid-column: 1 / -1;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 12px;
+        background-color: #006837;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .btn-register:hover {
+        background-color: #00592f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 104, 55, 0.25);
+    }
+
+    .registro-footer {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+
+    .registro-footer a {
+        color: #006837;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .registro-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .back-link {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .back-link a {
+        color: #666;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .back-link a:hover {
+        color: #FF6B00;
+    }
+
+    .messages {
+        margin-bottom: 20px;
+    }
+
+    .alert {
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+
+    .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .info-box {
+        background: rgba(0, 104, 55, 0.08);
+        border: 1px solid rgba(0, 104, 55, 0.18);
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        color: #006837;
+    }
+
+    @media (max-width: 700px) {
+        .registro-container {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="registro-container">
+    <div class="back-link">
+        <a href="/">← Volver al Inicio</a>
+    </div>
+
+    <div class="registro-header">
+        <h1>🏢 Registro de Empresa</h1>
+        <p>Crea tu cuenta empresarial para publicar oportunidades</p>
+    </div>
+
+    <div class="info-box">
+        💡 Al registrarte, podrás actualizar la información de tu empresa desde tu cuenta.
+    </div>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <h3 style="color: #006837; margin-top: 0; margin-bottom: 20px; font-size: 16px;">📋 Información de Cuenta</h3>
+
+        <div class="form-group">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required placeholder="usuario_empresa">
+            <p class="help-text">Sin espacios, solo letras, numeros y guion bajo</p>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required placeholder="contacto@empresa.com">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required placeholder="Contraseña">
+                <p class="help-text">Minimo 8 caracteres</p>
+            </div>
+            <div class="form-group">
+                <label for="password_confirm">Confirmar Contraseña:</label>
+                <input type="password" id="password_confirm" name="password_confirm" required placeholder="Repite la contraseña">
+            </div>
+        </div>
+
+        <h3 style="color: #006837; margin-top: 30px; margin-bottom: 20px; font-size: 16px;">🏢 Información de Empresa</h3>
+
+        <div class="form-group">
+            <label for="nombre">Nombre de la Empresa:</label>
+            <input type="text" id="nombre" name="nombre" required placeholder="Ej: Tech Solutions S.A.">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nit">NIT/Registro:</label>
+                <input type="text" id="nit" name="nit" required placeholder="Ej: 1234567890">
+            </div>
+            <div class="form-group">
+                <label for="capacidad_cupos">Cupos Disponibles:</label>
+                <input type="number" id="capacidad_cupos" name="capacidad_cupos" required min="1" placeholder="Ej: 10">
+                <p class="help-text">Cantidad de aprendices que quieres contratar</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" name="direccion" placeholder="Calle, ciudad, pais">
+        </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="telefono_contacto">Teléfono de contacto:</label>
+                    <input type="text" id="telefono_contacto" name="telefono_contacto" placeholder="Ej: 3001234567">
+                </div>
+                <div class="form-group">
+                    <label for="correo_contacto">Correo de contacto:</label>
+                    <input type="email" id="correo_contacto" name="correo_contacto" placeholder="contacto@empresa.com">
+                </div>
+            </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción de la Empresa:</label>
+            <textarea id="descripcion" name="descripcion" placeholder="Cuenta sobre tu empresa, sus valores, lo que buscas en un aprendiz..."></textarea>
+            <p class="help-text">Maximo 500 caracteres. Esto ayudara a atraer aprendices calificados</p>
+        </div>
+
+        <button type="submit" class="btn-register">Crear Empresa</button>
+    </form>
+
+    <div class="registro-footer">
+        ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a>
+    </div>
+</div>
+{% endblock %}

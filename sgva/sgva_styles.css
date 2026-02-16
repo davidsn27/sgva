@@ -1,0 +1,84 @@
+/* SGVA Modern Styles */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+    --info-gradient: linear-gradient(120deg, #4facfe 0%, #00f2fe 100%);
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --card-shadow: 0 10px 20px rgba(0,0,0,0.08);
+    --card-hover-transform: translateY(-5px);
+}
+
+body {
+    background-color: #f4f7f6;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Tarjetas Modernas */
+.card-modern {
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    background: white;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.card-modern:hover {
+    transform: var(--card-hover-transform);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+.card-header-modern {
+    background: var(--primary-gradient);
+    color: white;
+    padding: 16px 24px;
+    font-weight: 600;
+    border: none;
+}
+
+/* Badges y Etiquetas */
+.badge-modern {
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Barras de Progreso */
+.progress-modern {
+    height: 8px;
+    border-radius: 10px;
+    background-color: #e9ecef;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+/* Botones */
+.btn-gradient {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: opacity 0.3s;
+}
+
+.btn-gradient:hover {
+    opacity: 0.9;
+    color: white;
+    box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
