@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 📋 SGVA - Sistema de Gestión de Vinculación de Aprendices
 
 ## 📝 Descripción General
@@ -518,3 +519,6 @@ Para reportar bugs o sugerencias:
 **Última actualización**: Febrero 2026  
 **Estado**: ✅ Producción
 
+=======
+# sgva
+>>>>>>> 8e37a6f5e6f1a636a15acd41c49018cd755fa02d
