@@ -22,6 +22,6 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
-    # OAuth y Autenticación
-    path("accounts/", include("allauth.urls")),
+    # OAuth y Autenticación (comentado para evitar conflictos)
+    # path("accounts/", include("allauth.urls")),
 ]
