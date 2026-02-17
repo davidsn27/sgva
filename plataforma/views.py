@@ -635,7 +635,7 @@ def login_view(request):
             except:
                 pass
 
-            return redirect("inicio")
+            return redirect("inicio")  # Ahora apunta a /panel/
         else:
             messages.error(request, "Usuario o contrasena invalidos")
             return render(request, "plataforma/login.html")
