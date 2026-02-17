@@ -687,6 +687,21 @@ def api_oportunidades(request):
     return JsonResponse(data, safe=False)
 
 
+@login_required(login_url="login")
+def lista_visitas(request):
+    """Lista todas las visitas del sistema"""
+    # Verificar si el usuario tiene perfil
+    try:
+        perfil = request.user.perfil
+        if not perfil or perfil.rol != "FUNCIONARIO_SENA":
+            return redirect("inicio")
+    except:
+        return redirect("inicio")
+    
+    # Por ahora, mostrar una página simple
+    return render(request, 'plataforma/visitas.html')
+
+
 @require_http_methods(["POST"])
 @login_required
 def api_postularse(request):

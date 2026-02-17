@@ -43,7 +43,7 @@ urlpatterns = [
         views.editar_empresa,
         name="editar_empresa",
     ),
-    path("aprendices/", views.lista_aprendices, name="lista_aprendices"),
+    path("aprendices/", views.lista_aprendices, name="aprendices"),
     path(
         "aprendices/<int:aprendiz_id>/",
         views.detalle_aprendiz,
@@ -59,7 +59,18 @@ urlpatterns = [
         views.postular,
         name="postular",
     ),
-    path("registro/empresa/", views.registro_empresa, name="registro_empresa"),
+    path("empresas/", views.lista_empresas, name="empresas"),
+    path(
+        "empresas/<int:empresa_id>/",
+        views.detalle_empresa,
+        name="detalle_empresa",
+    ),
+    path(
+        "empresas/<int:empresa_id>/editar/",
+        views.editar_empresa,
+        name="editar_empresa",
+    ),
+    path("visitas/", views.lista_visitas, name="visitas"),
     path("registro/", views.registro_tipo, name="registro_tipo"),
     path("registro/aprendiz/", views.registro_aprendiz, name="registro_aprendiz"),
     path("login/", views.login_view, name="login"),
