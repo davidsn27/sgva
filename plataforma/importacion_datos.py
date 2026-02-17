@@ -69,28 +69,26 @@ class ImportadorDatos:
                         password=f"temp_{row['numero_documento']}"  # Contraseña temporal
                     )
                     
-                    # Crear perfil
-                    perfil = Perfil.objects.create(
-                        usuario=user,
-                        rol="ESTUDIANTE"
-                    )
-                    
-                    # Crear aprendiz
+                    # Crear aprendiz primero (SIN perfil)
                     aprendiz = Aprendiz.objects.create(
-                        usuario=user,
-                        perfil=perfil,
-                        nombres=row['nombres'],
-                        apellidos=row['apellidos'],
+                        nombre=f"{row['nombres']} {row['apellidos']}",
                         tipo_documento=row.get('tipo_documento', 'CC'),
                         numero_identificacion=str(row['numero_documento']),
-                        email=row['email'],
+                        correo=row['email'],
                         telefono=row.get('telefono', ''),
                         estado=MAP_ESTADOS_APRENDIZ.get(row.get('estado', '').lower(), 'DISPONIBLE'),
                         programa_formacion=row.get('programa_formacion', ''),
                         fecha_ultima_actividad=timezone.now()
                     )
                     
-                    self.exito.append(f"Aprendiz {aprendiz.nombres} {aprendiz.apellidos} importado correctamente")
+                    # Crear perfil DESPUÉS (con referencia al aprendiz)
+                    perfil = Perfil.objects.create(
+                        usuario=user,
+                        rol="ESTUDIANTE",
+                        aprendiz=aprendiz
+                    )
+                    
+                    self.exito.append(f"Aprendiz {aprendiz.nombre} importado correctamente")
                     
                 except Exception as e:
                     self.errores.append(f"Fila {index+1}: Error al procesar - {str(e)}")
