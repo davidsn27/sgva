@@ -1,37 +1,14 @@
-<aside class="h-full flex flex-col bg-white border-end p-3" style="width:260px">
+<div class="sidebar">
+    <h4 class="sidebar-title mb-4">SGVA</h4>
 
-    <div class="mb-4 text-center">
-        <h4 style="color:var(--sgva-primary); font-weight:800;">SGVA</h4>
-        <small class="text-muted">Panel de Funcionarios</small>
-    </div>
+    <a class="nav-item" href="{% url 'inicio' %}">📊 Panel</a>
+    <a class="nav-item" href="{% url 'aprendices' %}">👨‍🎓 Aprendices</a>
+    <a class="nav-item" href="{% url 'empresas' %}">🏢 Empresas</a>
+    <a class="nav-item" href="{% url 'visitas' %}">📅 Visitas</a>
 
-    <nav class="nav flex-column gap-2">
-
-        <a class="nav-link-sgva" href="{% url 'home' %}">
-            🏠 Página principal
-        </a>
-
-        <a class="nav-link-sgva" href="{% url 'inicio' %}">
-            📊 Panel principal
-        </a>
-
-        <a class="nav-link-sgva" href="{% url 'aprendices' %}">
-            👨‍🎓 Aprendices
-        </a>
-
-        <a class="nav-link-sgva" href="{% url 'empresas' %}">
-            🏢 Empresas
-        </a>
-
-        <a class="nav-link-sgva" href="{% url 'visitas' %}">
-            📅 Visitas
-        </a>
-
-    </nav>
-
-    <div class="mt-auto">
-        <a class="btn btn-sgva w-100" href="{% url 'logout' %}">
+    <div style="margin-top:40px">
+        <a class="btn-primary-modern w-100 text-center d-block" href="{% url 'logout' %}">
             Cerrar sesión
         </a>
     </div>
-</aside>
+</div>
