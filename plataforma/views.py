@@ -62,6 +62,12 @@ def home(request):
 def inicio(request):
     """Vista principal del sistema"""
     try:
+        # Debug: verificar estado de autenticación
+        print(f"DEBUG: Vista inicio - User authenticated: {request.user.is_authenticated}")
+        print(f"DEBUG: Vista inicio - User ID: {request.user.id}")
+        print(f"DEBUG: Vista inicio - Username: {request.user.username}")
+        print(f"DEBUG: Vista inicio - Session ID: {request.session.session_key}")
+        
         # Verificar si el usuario tiene perfil
         perfil = getattr(request.user, "perfil", None)
         if not perfil:
@@ -626,6 +632,15 @@ def login_view(request):
 
         if usuario is not None:
             login(request, usuario)
+            
+            # Forzar creación de sesión
+            request.session.save()
+            
+            # Debug: verificar que la sesión se guardó
+            print(f"DEBUG: Sesión creada para {username}")
+            print(f"DEBUG: Session ID: {request.session.session_key}")
+            print(f"DEBUG: User authenticated: {request.user.is_authenticated}")
+            print(f"DEBUG: User ID: {request.user.id}")
 
             # Redirigir según rol
             try:
@@ -637,7 +652,7 @@ def login_view(request):
 
             return redirect("inicio")  # Ahora apunta a /panel/
         else:
-            messages.error(request, "Usuario o contrasena invalidos")
+            messages.error(request, "Usuario o contraseña inválidos")
             return render(request, "plataforma/login.html")
 
     return render(request, "plataforma/login.html")
