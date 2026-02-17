@@ -56,18 +56,28 @@ class ImportadorDatos:
             # Procesar cada fila
             for index, row in df.iterrows():
                 try:
-                    # Verificar si ya existe
+                    # Verificar si ya existe el aprendiz
                     if Aprendiz.objects.filter(numero_identificacion=str(row['numero_documento'])).exists():
                         self.errores.append(f"Fila {index+1}: El aprendiz con documento {row['numero_documento']} ya existe")
                         continue
                     
-                    # Crear usuario Django
-                    username = f"{row['nombres'].split()[0].lower()}_{row['apellidos'].split()[0].lower()}_{row['numero_documento']}"
-                    user = User.objects.create_user(
-                        username=username,
-                        email=row['email'],
-                        password=f"temp_{row['numero_documento']}"  # Contraseña temporal
+                    # Crear o buscar usuario Django
+                    correo = row['email']
+                    usuario, creado = User.objects.get_or_create(
+                        username=correo,
+                        defaults={
+                            "email": correo,
+                            "first_name": row['nombres'],
+                            "last_name": row['apellidos'],
+                        }
                     )
+                    
+                    # Si ya existía, actualizamos datos
+                    if not creado:
+                        usuario.first_name = row['nombres']
+                        usuario.last_name = row['apellidos']
+                        usuario.email = correo
+                        usuario.save()
                     
                     # Crear aprendiz primero (SIN perfil)
                     aprendiz = Aprendiz.objects.create(
@@ -81,12 +91,20 @@ class ImportadorDatos:
                         fecha_ultima_actividad=timezone.now()
                     )
                     
-                    # Crear perfil DESPUÉS (con referencia al aprendiz)
-                    perfil = Perfil.objects.create(
-                        usuario=user,
-                        rol="ESTUDIANTE",
-                        aprendiz=aprendiz
+                    # Crear o actualizar perfil (con referencia al aprendiz)
+                    perfil, perfil_creado = Perfil.objects.get_or_create(
+                        usuario=usuario,
+                        defaults={
+                            "rol": "ESTUDIANTE",
+                            "aprendiz": aprendiz
+                        }
                     )
+                    
+                    # Si el perfil ya existía, lo actualizamos
+                    if not perfil_creado:
+                        perfil.rol = "ESTUDIANTE"
+                        perfil.aprendiz = aprendiz
+                        perfil.save()
                     
                     self.exito.append(f"Aprendiz {aprendiz.nombre} importado correctamente")
                     
