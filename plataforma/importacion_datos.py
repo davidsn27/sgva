@@ -7,6 +7,21 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from .models import Aprendiz, Empresa, Perfil, Postulacion
 
+# Mapeo de estados para el modelo Aprendiz
+MAP_ESTADOS_APRENDIZ = {
+    "disponible": "DISPONIBLE",
+    "en proceso de seleccion": "PROCESO_SELECCION",
+    "proceso de seleccion": "PROCESO_SELECCION",
+    "proceso de seleccion abierto": "PROCESO_SELECCION_ABIERTO",
+    "seleccion": "PROCESO_SELECCION_ABIERTO",
+    "seleccionado": "PROCESO_SELECCION_ABIERTO",
+    "contrato no registrado": "CONTRATO_NO_REGISTRADO",
+    "contrato nulo": "CONTRATO_NULO",
+    "inhabilitado por actualizacion": "INHABILITADO_POR_ACTUALIZACION",
+    "activo": "DISPONIBLE",
+    "acti": "DISPONIBLE",
+}
+
 
 class ImportadorDatos:
     """Clase para manejar la importación de datos desde archivos Excel/CSV"""
@@ -42,7 +57,7 @@ class ImportadorDatos:
             for index, row in df.iterrows():
                 try:
                     # Verificar si ya existe
-                    if Aprendiz.objects.filter(numero_documento=str(row['numero_documento'])).exists():
+                    if Aprendiz.objects.filter(numero_identificacion=str(row['numero_documento'])).exists():
                         self.errores.append(f"Fila {index+1}: El aprendiz con documento {row['numero_documento']} ya existe")
                         continue
                     
@@ -67,10 +82,10 @@ class ImportadorDatos:
                         nombres=row['nombres'],
                         apellidos=row['apellidos'],
                         tipo_documento=row.get('tipo_documento', 'CC'),
-                        numero_documento=str(row['numero_documento']),
+                        numero_identificacion=str(row['numero_documento']),
                         email=row['email'],
                         telefono=row.get('telefono', ''),
-                        estado=row.get('estado', 'ACTIVO'),
+                        estado=MAP_ESTADOS_APRENDIZ.get(row.get('estado', '').lower(), 'DISPONIBLE'),
                         programa_formacion=row.get('programa_formacion', ''),
                         fecha_ultima_actividad=timezone.now()
                     )
