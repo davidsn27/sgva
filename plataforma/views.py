@@ -122,6 +122,10 @@ def lista_aprendices(request):
         return redirect('mi_perfil')
     
     aprendices = Aprendiz.objects.all().order_by("nombre")
+    
+    # Depuración: mostrar total antes de filtros
+    print(f"DEBUG: Total aprendices en BD: {Aprendiz.objects.count()}")
+    print(f"DEBUG: Total aprendices antes de filtros: {aprendices.count()}")
 
     # Filtro por estado
     estado_filtro = request.GET.get("estado", "").strip()
@@ -153,15 +157,20 @@ def lista_aprendices(request):
     # Paginacion - 5 registros por página con opción de mostrar todos
     mostrar_todos = request.GET.get("todos") == "true"
     
+    print(f"DEBUG: Después de filtros: {aprendices.count()}")
+    print(f"DEBUG: mostrar_todos = {mostrar_todos}")
+    
     if mostrar_todos:
         # Mostrar todos sin paginación
         aprendices = aprendices
         paginator = None
+        print(f"DEBUG: Mostrando todos: {aprendices.count()}")
     else:
         # Paginación normal de 5 en 5
         paginator = Paginator(aprendices, 5)
         pagina = request.GET.get("pagina")
         aprendices = paginator.get_page(pagina)
+        print(f"DEBUG: Paginación: {aprendices.paginator.count} total, {len(aprendices)} en esta página")
 
     # Agregar información de postulación a cada aprendiz
     for aprendiz in aprendices:
