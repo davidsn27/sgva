@@ -255,9 +255,12 @@ class ImportadorDatos:
     
     def get_resumen(self):
         """Devuelve un resumen de la importación"""
+        total_registros = len(self.errores) + len(self.exito)
         return {
             'errores': self.errores,
             'exito': self.exito,
-            'total_errores': len(self.errores),
-            'total_exito': len(self.exito)
+            'total_registros': total_registros,
+            'registros_importados': len(self.exito),
+            'registros_omitidos': len(self.errores),
+            'registros_error': len(self.errores)
         }
