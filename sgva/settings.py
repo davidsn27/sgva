@@ -16,13 +16,16 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_urlsafe(50))
 
 # DEBUG mode based on environment
-DEBUG = ENVIRONMENT == "development"
+DEBUG = True
 
 # ALLOWED_HOSTS default for local dev; override via env var in prod
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # CSRF TRUSTED ORIGINS for browser preview and development
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "http://127.0.0.1:52352,http://localhost:52352,http://127.0.0.1:8000,http://localhost:8000,http://127.0.0.1:61415,http://localhost:61415").split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
 
 # Additional CSRF settings for development
 CSRF_COOKIE_HTTPONLY = False
@@ -46,12 +49,18 @@ if ENVIRONMENT == "production":
     CSRF_COOKIE_SECURE = os.getenv("CSRF_COOKIE_SECURE", "True") == "True"
 else:
     # Development: disable SSL/TLS requirements for local testing
+    SECURE_SSL_REDIRECT = False
     SECURE_HSTS_SECONDS = 0
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
-    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+
+# Session settings for development
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = None
+SESSION_COOKIE_DOMAIN = None
 
 # =============================
 # TEMPLATES
