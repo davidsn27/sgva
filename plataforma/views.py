@@ -150,8 +150,8 @@ def lista_aprendices(request):
             Q(nombre__icontains=busqueda) | Q(correo__icontains=busqueda)
         )
 
-    # Paginacion
-    paginator = Paginator(aprendices, 6)
+    # Paginacion - aumentar a 20 registros por página
+    paginator = Paginator(aprendices, 20)
     pagina = request.GET.get("pagina")
     aprendices = paginator.get_page(pagina)
 
