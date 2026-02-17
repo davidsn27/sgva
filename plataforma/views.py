@@ -57,41 +57,59 @@ def marcar_vencida_y_actualizar(postulacion):
 def inicio(request):
     """Vista principal del sistema"""
     try:
+        print("=== VISTA INICIO EJECUTÁNDOSE ===")
+        
         # Verificar si el usuario tiene perfil
         perfil = getattr(request.user, "perfil", None)
+        print(f"Perfil del usuario: {perfil}")
+        
         if not perfil:
+            print("=== USUARIO SIN PERFIL - REDIRIGIENDO ===")
             return redirect("mi_perfil")
 
         # Obtener estadísticas generales
+        print("=== OBTENIENDO ESTADÍSTICAS ===")
         total_aprendices = Aprendiz.objects.count()
         total_empresas = Empresa.objects.count()
         total_postulaciones = Postulacion.objects.count()
+        
+        print(f"Total aprendices: {total_aprendices}")
+        print(f"Total empresas: {total_empresas}")
+        print(f"Total postulaciones: {total_postulaciones}")
 
         # Estadísticas por estado
         aprendices_disponibles = Aprendiz.objects.filter(estado="DISPONIBLE").count()
         aprendices_seleccionados = Aprendiz.objects.filter(estado="PROCESO_SELECCION_ABIERTO").count()
         aprendices_contratados = Aprendiz.objects.filter(estado="CONTRATADO").count()
+        
+        print(f"Aprendices disponibles: {aprendices_disponibles}")
+        print(f"Aprendices seleccionados: {aprendices_seleccionados}")
+        print(f"Aprendices contratados: {aprendices_contratados}")
 
         # Actividad reciente
         postulaciones_recientes = Postulacion.objects.order_by("-fecha_postulacion")[:5]
         aprendices_recientes = Aprendiz.objects.order_by("-fecha_registro")[:5]
+        
+        print(f"Postulaciones recientes: {len(postulaciones_recientes)}")
+        print(f"Aprendices recientes: {len(aprendices_recientes)}")
 
-        return render(
-            request,
-            "plataforma/inicio.html",
-            {
-                "total_aprendices": total_aprendices,
-                "total_empresas": total_empresas,
-                "total_postulaciones": total_postulaciones,
-                "aprendices_disponibles": aprendices_disponibles,
-                "aprendices_seleccionados": aprendices_seleccionados,
-                "aprendices_contratados": aprendices_contratados,
-                "postulaciones_recientes": postulaciones_recientes,
-                "aprendices_recientes": aprendices_recientes,
-                "mostrar_boton_registro": True,
-            },
-        )
+        context = {
+            "total_aprendices": total_aprendices,
+            "total_empresas": total_empresas,
+            "total_postulaciones": total_postulaciones,
+            "aprendices_disponibles": aprendices_disponibles,
+            "aprendices_seleccionados": aprendices_seleccionados,
+            "aprendices_contratados": aprendices_contratados,
+            "postulaciones_recientes": postulaciones_recientes,
+            "aprendices_recientes": aprendices_recientes,
+            "mostrar_boton_registro": True,
+        }
+        
+        print("=== RENDERIZANDO TEMPLATE ===")
+        return render(request, "plataforma/inicio.html", context)
+        
     except Exception as e:
+        print(f"=== ERROR EN VISTA INICIO: {e} ===")
         return redirect("login")
 
 
