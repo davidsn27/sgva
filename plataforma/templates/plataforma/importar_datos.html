@@ -268,7 +268,8 @@
                 <h3>Aprendices</h3>
                 <p>Importar lista de aprendices con sus datos personales y de contacto</p>
                 <div id="aprendices-form" class="import-form">
-                    <form id="form-aprendices" enctype="multipart/form-data">
+                    <form id="form-aprendices" method="post" action="/procesar-importacion/" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label class="form-label">Archivo Excel o CSV</label>
                             <input type="file" name="archivo" class="form-control" accept=".xlsx,.xls,.csv" required>
@@ -287,7 +288,8 @@
                 <h3>Empresas</h3>
                 <p>Importar empresas participantes con su información de contacto</p>
                 <div id="empresas-form" class="import-form">
-                    <form id="form-empresas" enctype="multipart/form-data">
+                    <form id="form-empresas" method="post" action="/procesar-importacion/" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label class="form-label">Archivo Excel o CSV</label>
                             <input type="file" name="archivo" class="form-control" accept=".xlsx,.xls,.csv" required>
@@ -306,7 +308,8 @@
                 <h3>Postulaciones</h3>
                 <p>Importar postulaciones de aprendices a empresas</p>
                 <div id="postulaciones-form" class="import-form">
-                    <form id="form-postulaciones" enctype="multipart/form-data">
+                    <form id="form-postulaciones" method="post" action="/procesar-importacion/" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label class="form-label">Archivo Excel o CSV</label>
                             <input type="file" name="archivo" class="form-control" accept=".xlsx,.xls,.csv" required>
