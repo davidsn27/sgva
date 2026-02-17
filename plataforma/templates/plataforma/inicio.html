@@ -3,63 +3,178 @@
 {% block title %}Portal Funcionarios - SGVA{% endblock %}
 
 {% block content %}
-<div class="page-container">
-    <!-- TEXTO DE PRUEBA PARA VERIFICAR RENDERIZACIÓN -->
-    <div style="background: red; color: white; padding: 20px; margin: 20px 0; text-align: center; font-size: 20px;">
-        🔴 TEMPLATE INICIO.HTML SE ESTÁ RENDERIZANDO 🔴
-    </div>
-    
-    <!-- Header Principal -->
-    <div class="page-header">
-        <h1 class="page-title">
+<div class="container-fluid p-4">
+    <div class="mb-4">
+        <h1 style="color: var(--sgva-primary); font-weight: 700;">
             <i class="fas fa-tachometer-alt"></i> Portal Funcionarios
         </h1>
-        <p class="page-subtitle">Sistema de Gestión de Vinculación Laboral - SENA</p>
+        <p class="text-muted">Sistema de Gestión de Vinculación Laboral - SENA</p>
     </div>
 
-    <!-- Sección de Acciones Principales -->
-    <div class="content-grid">
-        <div class="info-card">
-            <div class="card-header">
-                <div class="card-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3 class="card-title">Estadísticas</h3>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-sgva">
+                {{ message }}
             </div>
-            
-            <!-- TEXTO DE PRUEBA PARA VERIFICAR DATOS -->
-            <div style="background: blue; color: white; padding: 10px; margin: 10px 0; text-align: center;">
-                📊 DATOS DE ESTADÍSTICAS:
-                Total Aprendices: {{ total_aprendices }} | 
-                Total Empresas: {{ total_empresas }} | 
-                Total Postulaciones: {{ total_postulaciones }}
-            </div>
-            
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="stat-number">{{ total_aprendices }}</div>
-                    <div class="stat-label">Aprendices</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ total_empresas }}</div>
-                    <div class="stat-label">Empresas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ total_postulaciones }}</div>
-                    <div class="stat-label">Postulaciones</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{ aprendices_contratados }}</div>
-                    <div class="stat-label">Contratados</div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Estadísticas Principales -->
+    <div class="card-modern p-4 mb-4">
+        <h3 class="mb-4" style="color: var(--sgva-primary);">
+            <i class="fas fa-chart-line"></i> Estadísticas
+        </h3>
+        
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="stat-card-sgva">
+                    <div class="stat-number-sgva">{{ total_aprendices }}</div>
+                    <div class="stat-label-sgva">Aprendices</div>
                 </div>
             </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="stat-card-sgva">
+                    <div class="stat-number-sgva">{{ total_empresas }}</div>
+                    <div class="stat-label-sgva">Empresas</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="stat-card-sgva">
+                    <div class="stat-number-sgva">{{ total_postulaciones }}</div>
+                    <div class="stat-label-sgva">Postulaciones</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="stat-card-sgva">
+                    <div class="stat-number-sgva">{{ aprendices_contratados }}</div>
+                    <div class="stat-label-sgva">Contratados</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="{% url 'dashboard_estadisticas' %}" class="btn btn-sgva">
+                <i class="fas fa-chart-bar"></i> Ver Dashboard Completo
+            </a>
+        </div>
+    </div>
+    
+    <!-- Gestión de Aprendices -->
+    <div class="card-modern p-4 mb-4">
+        <h3 class="mb-4" style="color: var(--sgva-primary);">
+            <i class="fas fa-users-cog"></i> Gestión de Aprendices
+        </h3>
+        
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="{% url 'lista_aprendices' %}" class="nav-link-sgva card-modern p-3 text-center text-decoration-none">
+                    <div class="mb-2">
+                        <i class="fas fa-list fa-2x" style="color: var(--sgva-primary);"></i>
+                    </div>
+                    <h5>Lista de Aprendices</h5>
+                    <p class="small text-muted">Ver y gestionar todos los aprendices del sistema</p>
+                </a>
+            </div>
             
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="{% url 'dashboard_estadisticas' %}" class="btn btn-primary">
-                    <i class="fas fa-chart-bar"></i> Ver Dashboard Completo
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="{% url 'importar_datos' %}" class="nav-link-sgva card-modern p-3 text-center text-decoration-none">
+                    <div class="mb-2">
+                        <i class="fas fa-file-import fa-2x" style="color: var(--sgva-primary);"></i>
+                    </div>
+                    <h5>Importar Datos</h5>
+                    <p class="small text-muted">Importación masiva de aprendices desde Excel</p>
+                </a>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="{% url 'info_aprendices' %}" class="nav-link-sgva card-modern p-3 text-center text-decoration-none">
+                    <div class="mb-2">
+                        <i class="fas fa-info-circle fa-2x" style="color: var(--sgva-primary);"></i>
+                    </div>
+                    <h5>Información</h5>
+                    <p class="small text-muted">Guías y documentación sobre aprendices</p>
+                </a>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="{% url 'postulaciones_recibidas' %}" class="nav-link-sgva card-modern p-3 text-center text-decoration-none">
+                    <div class="mb-2">
+                        <i class="fas fa-clipboard-list fa-2x" style="color: var(--sgva-primary);"></i>
+                    </div>
+                    <h5>Postulaciones</h5>
+                    <p class="small text-muted">Revisar postulaciones recibidas</p>
                 </a>
             </div>
         </div>
+    </div>
+
+    <!-- Gestión de Empresas -->
+    <div class="card-modern p-4 mb-4">
+        <h3 class="mb-4" style="color: var(--sgva-primary);">
+            <i class="fas fa-building"></i> Gestión de Empresas
+        </h3>
+        
+        <div class="row">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="{% url 'lista_empresas' %}" class="nav-link-sgva card-modern p-3 text-center text-decoration-none">
+                    <div class="mb-2">
+                        <i class="fas fa-building fa-2x" style="color: var(--sgva-primary);"></i>
+                    </div>
+                    <h5>Lista de Empresas</h5>
+                    <p class="small text-muted">Ver todas las empresas registradas</p>
+                </a>
+            </div>
+            
+            <div class="col-md-3 col-sm-6 mb-3">
+                <a href="{% url 'info_empresas' %}" class="nav-link-sgva card-modern p-3 text-center text-decoration-none">
+                    <div class="mb-2">
+                        <i class="fas fa-info-circle fa-2x" style="color: var(--sgva-primary);"></i>
+                    </div>
+                    <h5>Información</h5>
+                    <p class="small text-muted">Guías y documentación sobre empresas</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actividad Reciente -->
+    <div class="card-modern p-4">
+        <h3 class="mb-4" style="color: var(--sgva-primary);">
+            <i class="fas fa-clock"></i> Actividad Reciente
+        </h3>
+        
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Nombre</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for aprendiz in aprendices_recientes %}
+                    <tr>
+                        <td><i class="fas fa-user-graduate"></i> Aprendiz</td>
+                        <td>{{ aprendiz.nombre }}</td>
+                        <td>{{ aprendiz.fecha_registro|date:"d/m/Y" }}</td>
+                        <td><span class="badge bg-success">{{ aprendiz.estado }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-3">
+                            <i class="fas fa-inbox"></i>
+                            <p class="mb-0">No hay actividad reciente registrada</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
         
         <div class="info-card">
             <div class="card-header">

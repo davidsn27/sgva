@@ -1,0 +1,125 @@
+:root {
+    --sgva-primary: #ff7a00;        /* Naranja principal */
+    --sgva-primary-soft: #fff1e6;
+
+    --sgva-secondary: #16a34a;      /* Verde principal */
+    --sgva-secondary-soft: #e8f7ee;
+
+    --sgva-bg: #f4f6f8;
+    --sgva-card: #ffffff;
+
+    --sgva-text: #1f2937;
+    --sgva-text-soft: #6b7280;
+
+    --sgva-border: #e5e7eb;
+}
+
+/* Fondo general */
+body {
+    background: var(--sgva-bg);
+    color: var(--sgva-text);
+}
+
+/* Tarjetas */
+.card-modern {
+    background: var(--sgva-card);
+    border-radius: 14px;
+    border: 1px solid var(--sgva-border);
+    box-shadow: 0 4px 18px rgba(0,0,0,.05);
+}
+
+/* Botones */
+.btn-sgva {
+    background: var(--sgva-primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: 600;
+    transition: .2s;
+}
+.btn-sgva:hover {
+    background: #e96d00;
+}
+
+.btn-success-sgva {
+    background: var(--sgva-secondary);
+    color: white;
+}
+
+/* Inputs */
+.input-sgva {
+    border-radius: 10px;
+    border: 1px solid var(--sgva-border);
+    padding: 10px 14px;
+}
+.input-sgva:focus {
+    outline: none;
+    border-color: var(--sgva-primary);
+    box-shadow: 0 0 0 3px var(--sgva-primary-soft);
+}
+
+/* Tablas modernas */
+table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead {
+    background: var(--sgva-primary);
+    color: white;
+}
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* Alertas del sistema */
+.alert-sgva {
+    background: var(--sgva-card);
+    border-radius: 10px;
+    border-left: 5px solid var(--sgva-secondary);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Navegación */
+.nav-link-sgva {
+    color: var(--sgva-text);
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link-sgva:hover {
+    background: var(--sgva-primary-soft);
+    color: var(--sgva-primary);
+}
+
+/* Estadísticas */
+.stat-card-sgva {
+    background: var(--sgva-card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid var(--sgva-border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.stat-number-sgva {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--sgva-primary);
+}
+
+.stat-label-sgva {
+    color: var(--sgva-text-soft);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}

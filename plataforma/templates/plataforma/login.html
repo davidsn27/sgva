@@ -44,63 +44,28 @@
 {% endblock %}
 
 {% block content %}
-<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-    <!-- TEXTO DE PRUEBA - SI VES ESTO, EL TEMPLATE FUNCIONA -->
-    <div style="position: fixed; top: 0; left: 0; background: red; color: white; padding: 10px; z-index: 9999; font-size: 20px;">
-        TEMPLATE LOGIN FUNCIONANDO
-    </div>
-    
-    <div class="info-card" style="max-width: 450px; width: 100%;">
-        <div class="card-header">
-            <div class="card-icon">
-                <i class="fas fa-sign-in-alt"></i>
+<div class="card-modern p-4" style="max-width:420px;margin:auto;margin-top:8vh">
+    <h3 class="mb-4 text-center" style="color:var(--sgva-primary)">
+        Ingreso de funcionarios
+    </h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-sgva">
+                {{ message }}
             </div>
-            <h3 class="card-title">Iniciar Sesión</h3>
-        </div>
-            
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        <i class="fas fa-info-circle"></i>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-            
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">
-                        <i class="fas fa-user"></i> Usuario o Correo
-                    </label>
-                    <input type="text" name="username" id="username" class="form-control" 
-                           placeholder="Ingrese su usuario o correo electrónico" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">
-                        <i class="fas fa-lock"></i> Contraseña
-                    </label>
-                    <input type="password" name="password" id="password" class="form-control" 
-                           placeholder="Ingrese su contraseña" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="remember_me" class="checkbox-input">
-                        Recordarme
-                    </label>
-                    <a href="#" class="forgot-password">
-                        ¿Olvidó su contraseña?
-                    </a>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Iniciar Sesión
-                </button>
-            </form>
-        </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input class="input-sgva w-100 mb-3" name="username" placeholder="Usuario" required>
+
+        <input type="password" class="input-sgva w-100 mb-4" name="password" placeholder="Contraseña" required>
+
+        <button class="btn-sgva w-100" type="submit">Ingresar</button>
+    </form>
     </div>
 </div>
 
