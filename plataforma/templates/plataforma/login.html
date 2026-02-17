@@ -39,15 +39,14 @@
 {% endblock %}
 
 {% block content %}
-<div class="page-container">
-    <div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
-        <div class="info-card" style="max-width: 450px; width: 100%;">
-            <div class="card-header">
-                <div class="card-icon">
-                    <i class="fas fa-sign-in-alt"></i>
-                </div>
-                <h3 class="card-title">Iniciar Sesión</h3>
+<div style="display: flex; justify-content: center; align-items: center; min-height: 80vh; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="info-card" style="max-width: 450px; width: 100;">
+        <div class="card-header">
+            <div class="card-icon">
+                <i class="fas fa-sign-in-alt"></i>
             </div>
+            <h3 class="card-title">Iniciar Sesión</h3>
+        </div>
             
             {% if messages %}
                 {% for message in messages %}
