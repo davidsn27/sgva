@@ -3,8 +3,7 @@ import json
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -56,8 +55,44 @@ def marcar_vencida_y_actualizar(postulacion):
 
 @login_required(login_url="login")
 def inicio(request):
-    """Vista principal del sistema - Template informativo"""
-    return render(request, 'plataforma/inicio.html')
+    """Vista principal del sistema"""
+    try:
+        # Verificar si el usuario tiene perfil
+        perfil = getattr(request.user, "perfil", None)
+        if not perfil:
+            return redirect("mi_perfil")
+
+        # Obtener estadísticas generales
+        total_aprendices = Aprendiz.objects.count()
+        total_empresas = Empresa.objects.count()
+        total_postulaciones = Postulacion.objects.count()
+
+        # Estadísticas por estado
+        aprendices_disponibles = Aprendiz.objects.filter(estado="DISPONIBLE").count()
+        aprendices_seleccionados = Aprendiz.objects.filter(estado="PROCESO_SELECCION_ABIERTO").count()
+        aprendices_contratados = Aprendiz.objects.filter(estado="CONTRATADO").count()
+
+        # Actividad reciente
+        postulaciones_recientes = Postulacion.objects.order_by("-fecha_postulacion")[:5]
+        aprendices_recientes = Aprendiz.objects.order_by("-fecha_registro")[:5]
+
+        return render(
+            request,
+            "plataforma/inicio.html",
+            {
+                "total_aprendices": total_aprendices,
+                "total_empresas": total_empresas,
+                "total_postulaciones": total_postulaciones,
+                "aprendices_disponibles": aprendices_disponibles,
+                "aprendices_seleccionados": aprendices_seleccionados,
+                "aprendices_contratados": aprendices_contratados,
+                "postulaciones_recientes": postulaciones_recientes,
+                "aprendices_recientes": aprendices_recientes,
+                "mostrar_boton_registro": True,
+            },
+        )
+    except Exception as e:
+        return redirect("login")
 
 
 @login_required(login_url="login")
@@ -583,7 +618,7 @@ def login_view(request):
             except:
                 pass
 
-            return redirect("/?welcome=1")
+            return redirect("inicio")
         else:
             messages.error(request, "Usuario o contrasena invalidos")
             return render(request, "plataforma/login.html")
