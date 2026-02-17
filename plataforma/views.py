@@ -150,10 +150,18 @@ def lista_aprendices(request):
             Q(nombre__icontains=busqueda) | Q(correo__icontains=busqueda)
         )
 
-    # Paginacion - aumentar a 20 registros por página
-    paginator = Paginator(aprendices, 20)
-    pagina = request.GET.get("pagina")
-    aprendices = paginator.get_page(pagina)
+    # Paginacion - 5 registros por página con opción de mostrar todos
+    mostrar_todos = request.GET.get("todos") == "true"
+    
+    if mostrar_todos:
+        # Mostrar todos sin paginación
+        aprendices = aprendices
+        paginator = None
+    else:
+        # Paginación normal de 5 en 5
+        paginator = Paginator(aprendices, 5)
+        pagina = request.GET.get("pagina")
+        aprendices = paginator.get_page(pagina)
 
     # Agregar información de postulación a cada aprendiz
     for aprendiz in aprendices:
@@ -223,6 +231,7 @@ def lista_aprendices(request):
             "ficha_filtro": ficha_filtro,
             "programa_filtro": programa_filtro,
             "busqueda": busqueda,
+            "mostrar_todos": mostrar_todos,
         },
     )
 

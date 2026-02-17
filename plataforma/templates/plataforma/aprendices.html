@@ -428,6 +428,15 @@
                 <a href="{% url 'lista_aprendices' %}" class="btn btn-secondary">
                     <i class="fas fa-times"></i> Limpiar Filtros
                 </a>
+                {% if not mostrar_todos %}
+                <a href="?todos=true{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.estado %}&estado={{ request.GET.estado }}{% endif %}{% if request.GET.empresa %}&empresa={{ request.GET.empresa }}{% endif %}{% if request.GET.ficha %}&ficha={{ request.GET.ficha }}{% endif %}{% if request.GET.programa %}&programa={{ request.GET.programa }}{% endif %}" class="btn btn-info">
+                    <i class="fas fa-list"></i> Mostrar Todos
+                </a>
+                {% else %}
+                <a href="{% url 'lista_aprendices' %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}{% if request.GET.estado %}?estado={{ request.GET.estado }}{% endif %}{% if request.GET.empresa %}?empresa={{ request.GET.empresa }}{% endif %}{% if request.GET.ficha %}?ficha={{ request.GET.ficha }}{% endif %}{% if request.GET.programa %}?programa={{ request.GET.programa }}{% endif %}" class="btn btn-warning">
+                    <i class="fas fa-th-list"></i> Paginar (5 por página)
+                </a>
+                {% endif %}
             </div>
         </form>
     </div>
@@ -435,7 +444,12 @@
     <!-- Results Info -->
     <div class="page-header">
         <p>
-            <strong>Total de aprendices:</strong> {{ aprendices.paginator.count }}
+            <strong>Total de aprendices:</strong> 
+            {% if mostrar_todos %}
+                {{ aprendices|length }}
+            {% else %}
+                {{ aprendices.paginator.count }}
+            {% endif %}
             {% if busqueda or estado_filtro or empresa_filtro or ficha_filtro or programa_filtro %}
             <br><small>(Resultados filtrados)</small>
             {% endif %}
@@ -517,7 +531,7 @@
     </div>
 
     <!-- Pagination -->
-    {% if aprendices.has_other_pages %}
+    {% if not mostrar_todos and aprendices.has_other_pages %}
     <div class="pagination">
         {% if aprendices.has_previous %}
             <a href="?page={{ aprendices.previous_page_number }}{% if busqueda %}&q={{ busqueda }}{% endif %}{% if estado_seleccionado %}&estado={{ estado_seleccionado }}{% endif %}">
