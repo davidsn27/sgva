@@ -1,0 +1,510 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Importar Datos - SGVA{% endblock %}
+
+{% block extra_css %}
+<style>
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.page-header {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: #7f8c8d;
+    margin: 0;
+}
+
+.import-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.import-title {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.import-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.import-card {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.import-card:hover {
+    border-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+}
+
+.import-icon {
+    font-size: 3rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+}
+
+.import-card h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.import-card p {
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.import-form {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.progress {
+    width: 100%;
+    height: 20px;
+    background: #f3f3f3;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.result-section {
+    display: none;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+}
+
+.result-title {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3498db;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-file-import"></i> Importar Datos
+        </h1>
+        <p class="page-subtitle">Importa aprendices, empresas y postulaciones desde archivos Excel o CSV</p>
+    </div>
+
+    <div class="import-section">
+        <h2 class="import-title">
+            <i class="fas fa-database"></i> Selecciona el tipo de datos a importar
+        </h2>
+        
+        <div class="import-grid">
+            <div class="import-card" onclick="showImportForm('aprendices')">
+                <div class="import-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3>Aprendices</h3>
+                <p>Importar lista de aprendices con sus datos personales y de contacto</p>
+                <div id="aprendices-form" class="import-form">
+                    <form id="form-aprendices" method="post" action="/procesar-importacion/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="form-label">Archivo Excel o CSV</label>
+                            <input type="file" name="archivo" class="form-control" accept=".xlsx,.xls,.csv" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> Importar Aprendices
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="import-card" onclick="showImportForm('empresas')">
+                <div class="import-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3>Empresas</h3>
+                <p>Importar empresas participantes con su información de contacto</p>
+                <div id="empresas-form" class="import-form">
+                    <form id="form-empresas" method="post" action="/procesar-importacion/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="form-label">Archivo Excel o CSV</label>
+                            <input type="file" name="archivo" class="form-control" accept=".xlsx,.xls,.csv" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> Importar Empresas
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="import-card" onclick="showImportForm('postulaciones')">
+                <div class="import-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <h3>Postulaciones</h3>
+                <p>Importar postulaciones de aprendices a empresas</p>
+                <div id="postulaciones-form" class="import-form">
+                    <form id="form-postulaciones" method="post" action="/procesar-importacion/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="form-label">Archivo Excel o CSV</label>
+                            <input type="file" name="archivo" class="form-control" accept=".xlsx,.xls,.csv" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> Importar Postulaciones
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <h4><i class="fas fa-info-circle"></i> Información Importante</h4>
+        <ul>
+            <li>Los archivos deben estar en formato Excel (.xlsx, .xls) o CSV (.csv)</li>
+            <li>La primera fila debe contener los nombres de las columnas</li>
+            <li>Los datos deben seguir el formato especificado en las plantillas</li>
+            <li>Se validarán los datos antes de importarlos</li>
+            <li>Los datos duplicados serán omitidos</li>
+        </ul>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Importando datos... Por favor espera.</p>
+        <div class="progress">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="result-section" id="result-section">
+        <h3 class="result-title">
+            <i class="fas fa-chart-bar"></i> Resultados de la Importación
+        </h3>
+        <div class="result-stats" id="result-stats">
+            <!-- Los resultados se cargarán aquí dinámicamente -->
+        </div>
+        <div id="result-details">
+            <!-- Los detalles se cargarán aquí dinámicamente -->
+        </div>
+        <button class="btn btn-secondary" onclick="resetImport()">
+            <i class="fas fa-redo"></i> Nueva Importación
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showImportForm(type) {
+    // Ocultar todos los formularios
+    document.querySelectorAll('.import-form').forEach(form => {
+        form.style.display = 'none';
+    });
+    
+    // Mostrar el formulario seleccionado
+    const form = document.getElementById(type + '-form');
+    if (form) {
+        form.style.display = form.style.display === 'block' ? 'none' : 'block';
+    }
+}
+
+// Manejar envío de formularios
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const tipo = this.id.replace('form-', '');
+        
+        // Agregar el tipo de importación
+        formData.append('tipo_importacion', tipo);
+        
+        // Mostrar loading
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('result-section').style.display = 'none';
+        
+        // Simular progreso
+        let progress = 0;
+        const progressBar = document.getElementById('progress-bar');
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 30;
+            if (progress > 90) progress = 90;
+            progressBar.style.width = progress + '%';
+        }, 500);
+        
+        // Enviar datos
+        fetch('/procesar-importacion/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            clearInterval(progressInterval);
+            progressBar.style.width = '100%';
+            
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                showResults(data);
+            }, 500);
+        })
+        .catch(error => {
+            clearInterval(progressInterval);
+            document.getElementById('loading').style.display = 'none';
+            alert('Error al importar datos: ' + error.message);
+        });
+    });
+});
+
+function showResults(data) {
+    const resultSection = document.getElementById('result-section');
+    const resultStats = document.getElementById('result-stats');
+    const resultDetails = document.getElementById('result-details');
+    
+    if (data.exito) {
+        const resumen = data.resumen;
+        
+        resultStats.innerHTML = `
+            <div class="stat-card">
+                <div class="stat-number">${resumen.total_registros}</div>
+                <div class="stat-label">Total Registros</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${resumen.registros_importados}</div>
+                <div class="stat-label">Importados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${resumen.registros_omitidos}</div>
+                <div class="stat-label">Omitidos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">${resumen.registros_error}</div>
+                <div class="stat-label">Con Errores</div>
+            </div>
+        `;
+        
+        if (resumen.errores && resumen.errores.length > 0) {
+            resultDetails.innerHTML = `
+                <div class="alert alert-warning">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Errores Detectados</h4>
+                    <ul>
+                        ${resumen.errores.map(error => `<li>${error}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        } else {
+            resultDetails.innerHTML = `
+                <div class="alert alert-info">
+                    <h4><i class="fas fa-check-circle"></i> Importación Exitosa</h4>
+                    <p>Todos los datos se importaron correctamente.</p>
+                </div>
+            `;
+        }
+    } else {
+        resultDetails.innerHTML = `
+            <div class="alert alert-warning">
+                <h4><i class="fas fa-exclamation-triangle"></i> Error en la Importación</h4>
+                <p>${data.error || 'Ocurrió un error durante la importación.'}</p>
+            </div>
+        `;
+    }
+    
+    resultSection.style.display = 'block';
+}
+
+function resetImport() {
+    document.getElementById('result-section').style.display = 'none';
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('progress-bar').style.width = '0%';
+    
+    // Resetear formularios
+    document.querySelectorAll('form').forEach(form => {
+        form.reset();
+        form.querySelector('.import-form').style.display = 'none';
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}

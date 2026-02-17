@@ -1,0 +1,561 @@
+{% extends "plataforma/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard SGVA{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Estilos profesionales y ordenados para el dashboard */
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+.header-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-section h2 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-section p {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+    animation: gradient-shift 3s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+}
+
+.stat-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    padding: 1rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.estados-section {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.estados-section h3 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.estados-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.estado-card {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.estado-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.estado-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    border-color: #667eea;
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+}
+
+.estado-card:hover::before {
+    opacity: 0.1;
+}
+
+.estado-card:hover .estado-number,
+.estado-card:hover .estado-label,
+.estado-card:hover .estado-icon {
+    color: #667eea;
+    transform: scale(1.05);
+}
+
+.estado-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.estado-label {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.estado-icon {
+    font-size: 1.8rem;
+    color: #667eea;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.tables-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding: 0 1rem;
+}
+
+.table-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table-container h4 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 700;
+    border: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid #ecf0f1;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.table tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+    transform: scale(1.01);
+}
+
+.badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+.btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+}
+
+.footer-info {
+    text-align: center;
+    color: white;
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-info p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .estados-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    
+    .tables-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-section h2 {
+        font-size: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .estado-number {
+        font-size: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Simple interactividad
+    const estadoCards = document.querySelectorAll('.estado-card');
+    estadoCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Simple feedback
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Header -->
+    <div class="header-section">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2><i class="fas fa-chart-line"></i> Dashboard SGVA</h2>
+                <p>Vista general del sistema</p>
+            </div>
+            <div>
+                <a href="{% url 'importar_datos' %}" class="btn">
+                    <i class="fas fa-upload"></i> Importar Datos
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadísticas Principales -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="stat-number">{{ total_aprendices }}</div>
+            <div class="stat-label">Aprendices</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <div class="stat-number">{{ total_empresas }}</div>
+            <div class="stat-label">Empresas</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-file-contract"></i>
+            </div>
+            <div class="stat-number">{{ total_postulaciones }}</div>
+            <div class="stat-label">Postulaciones</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-number">{{ postulaciones_ultimo_mes }}</div>
+            <div class="stat-label">Último Mes</div>
+        </div>
+    </div>
+
+    <!-- Estados de Aprendices -->
+    <div class="estados-section">
+        <h3><i class="fas fa-user-graduate"></i> Estados de Aprendices</h3>
+        <div class="estados-grid">
+            {% for estado in estados_aprendices %}
+            <div class="estado-card">
+                <div class="estado-icon">
+                    {% if estado.key == 'DISPONIBLE' %}
+                        <i class="fas fa-user-check"></i>
+                    {% elif estado.key == 'PROCESO_SELECCION' %}
+                        <i class="fas fa-user-clock"></i>
+                    {% elif estado.key == 'PROCESO_SELECCION_ABIERTO' %}
+                        <i class="fas fa-user-search"></i>
+                    {% elif estado.key == 'CONTRATO_NO_REGISTRADO' %}
+                        <i class="fas fa-user-exclamation"></i>
+                    {% elif estado.key == 'CONTRATADO' %}
+                        <i class="fas fa-user-tie"></i>
+                    {% elif estado.key == 'INHABILITADO_POR_ACTUALIZACION' %}
+                        <i class="fas fa-user-slash"></i>
+                    {% endif %}
+                </div>
+                <div class="estado-number">{{ estado.count }}</div>
+                <div class="estado-label">{{ estado.label }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Estados de Postulaciones -->
+    <div class="estados-section">
+        <h3><i class="fas fa-chart-pie"></i> Estados de Postulaciones</h3>
+        <div class="estados-grid">
+            {% for estado in estados_postulaciones %}
+            <div class="estado-card">
+                <div class="estado-icon">
+                    {% if estado.key == 'PENDIENTE' %}
+                        <i class="fas fa-clock"></i>
+                    {% elif estado.key == 'PROCESO_SELECCION_ABIERTO' %}
+                        <i class="fas fa-search"></i>
+                    {% elif estado.key == 'CONTRATO_NO_REGISTRADO' %}
+                        <i class="fas fa-exclamation-triangle"></i>
+                    {% elif estado.key == 'CONTRATADO' %}
+                        <i class="fas fa-check-circle"></i>
+                    {% elif estado.key == 'RECHAZADA' %}
+                        <i class="fas fa-times-circle"></i>
+                    {% elif estado.key == 'DISPONIBLE' %}
+                        <i class="fas fa-user"></i>
+                    {% endif %}
+                </div>
+                <div class="estado-number">{{ estado.count }}</div>
+                <div class="estado-label">{{ estado.label }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Tablas -->
+    <div class="tables-section">
+        <div class="table-container">
+            <h4><i class="fas fa-trophy"></i> Top Empresas</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Postulaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for empresa in top_empresas %}
+                    <tr>
+                        <td>{{ empresa.nombre }}</td>
+                        <td><span class="badge">{{ empresa.total_postulaciones }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h4><i class="fas fa-user-graduate"></i> Top Aprendices</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Aprendiz</th>
+                        <th>Aceptaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for aprendiz in top_aprendices %}
+                    <tr>
+                        <td>{{ aprendiz.nombre }}</td>
+                        <td><span class="badge">{{ aprendiz.postulaciones_aceptadas }}</span></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer Info -->
+    <div class="footer-info">
+        <p>
+            <i class="fas fa-info-circle"></i>
+            Última actualización: {{ fecha_actualizacion|date:"d/m/Y H:i" }} | 
+            Total aprendices: {{ total_aprendices }} | 
+            Total postulaciones: {{ total_postulaciones }}
+        </p>
+    </div>
+</div>
+{% endblock %}
