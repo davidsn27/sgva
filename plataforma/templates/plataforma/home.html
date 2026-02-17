@@ -1,0 +1,21 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}SGVA - Sistema de Gestión de Vinculación Laboral{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1 style="color:var(--sgva-primary); font-weight:800;">
+        Sistema de Gestión de Visitas a Aprendices
+    </h1>
+
+    <p class="mt-3 text-muted">
+        Plataforma institucional para seguimiento de prácticas empresariales
+    </p>
+
+    <div class="mt-4">
+        <a href="{% url 'login' %}" class="btn-sgva">
+            Ingresar como funcionario
+        </a>
+    </div>
+</div>
+{% endblock %}

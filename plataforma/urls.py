@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from . import views, viewsets, viewsets_analytics, viewsets_ratings, views_index
+from . import views, viewsets, viewsets_analytics, viewsets_ratings
 
 # Crear router para API REST
 router = DefaultRouter()
@@ -26,10 +26,10 @@ router.register(r"analytics", viewsets_analytics.AnalyticsViewSet, basename="ana
 urlpatterns = [
     # API REST
     path("api/", include(router.urls)),
-    # Vista principal (index)
-    path("", views_index.index_view, name="index"),
-    # Vista de información (para usuarios autenticados)
-    path("inicio/", views.inicio, name="inicio"),
+    # Vista principal pública (home)
+    path("", views.home, name="home"),
+    # Vista de panel privado (para usuarios autenticados)
+    path("panel/", views.inicio, name="inicio"),
     # Vistas tradicionales
     path("dashboard/", views.dashboard_reportes, name="dashboard_reportes"),
     path("empresas/", views.lista_empresas, name="lista_empresas"),

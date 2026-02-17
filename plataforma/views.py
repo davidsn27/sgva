@@ -53,6 +53,11 @@ def marcar_vencida_y_actualizar(postulacion):
     return False
 
 
+def home(request):
+    """Página de bienvenida pública"""
+    return render(request, 'plataforma/home.html')
+
+
 @login_required(login_url="login")
 def inicio(request):
     """Vista principal del sistema"""
