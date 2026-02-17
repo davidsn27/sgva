@@ -1418,6 +1418,10 @@ def procesar_importacion(request):
         })
         
     except Exception as e:
+        import traceback
+        print("=== ERROR EN IMPORTACIÓN ===")
+        print(traceback.format_exc())
+        print("==========================")
         return JsonResponse({'error': f'Error en la importación: {str(e)}'}, status=500)
 
 
