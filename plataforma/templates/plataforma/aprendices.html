@@ -4,103 +4,187 @@
 
 {% block extra_css %}
 <style>
+/* ESTILOS MODERNOS Y ATRACTIVOS */
 .page-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
 }
 
 .page-header {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
+    color: white;
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 104, 55, 0.3);
     margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .page-title {
-    color: #2c3e50;
+    font-size: 2.5rem;
+    font-weight: 800;
     margin-bottom: 0.5rem;
-    font-size: 2rem;
-    font-weight: 700;
+    position: relative;
+    z-index: 1;
 }
 
 .page-subtitle {
-    color: #7f8c8d;
+    font-size: 1.1rem;
+    opacity: 0.9;
     margin: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #006837;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .filters-section {
     background: white;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     margin-bottom: 2rem;
 }
 
 .filters-title {
     color: #2c3e50;
+    font-size: 1.3rem;
+    font-weight: 700;
     margin-bottom: 1.5rem;
-    font-size: 1.25rem;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .filters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: end;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
 }
 
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #2c3e50;
+    color: #495057;
     font-weight: 600;
+    font-size: 0.9rem;
 }
 
 .form-control {
     width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #e1e8ed;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    border-color: #006837;
+    box-shadow: 0 0 0 4px rgba(0, 104, 55, 0.1);
+    background: white;
 }
 
 .btn {
     padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn-primary {
-    background: #006837;
+    background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
     color: white;
+    box-shadow: 0 4px 15px rgba(0, 104, 55, 0.3);
 }
 
 .btn-primary:hover {
-    background: #FF6B00;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 104, 55, 0.4);
 }
 
 .btn-secondary {
@@ -113,18 +197,32 @@
     transform: translateY(-2px);
 }
 
-/* ESTILOS DE TABLA MEJORADOS - SIN CONFLICTOS */
+.btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #138496;
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+}
+
 .table-container {
     background: white;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     overflow: hidden;
-    transition: all 0.3s ease;
-}
-
-.table-container:hover {
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    transform: translateY(-2px);
+    margin-bottom: 2rem;
 }
 
 .table {
@@ -134,218 +232,160 @@
 }
 
 .table thead {
-    background: #006837;
-    color: white;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.table thead th {
-    padding: 1rem 1.25rem;
+.table th {
+    padding: 1.25rem 1rem;
     text-align: left;
-    font-weight: 600;
+    font-weight: 700;
+    color: #495057;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border: none;
+    border-bottom: 2px solid #dee2e6;
 }
 
 .table tbody tr {
-    border-bottom: 1px solid #e9ecef;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f1f3f4;
 }
 
 .table tbody tr:hover {
-    background: rgba(0, 104, 55, 0.05);
-    box-shadow: 0 4px 12px rgba(0, 104, 55, 0.1);
+    background: #f8f9fa;
+    transform: scale(1.01);
 }
 
-.table tbody tr:hover td {
-    color: #006837;
-    font-weight: 500;
-}
-
-.table tbody tr:last-child {
-    border-bottom: none;
-}
-
-.table tbody td {
-    padding: 1rem 1.25rem;
+.table td {
+    padding: 1.25rem 1rem;
     vertical-align: middle;
-    border: none;
-    transition: all 0.3s ease;
+    color: #495057;
 }
 
-.table tbody td:first-child {
+.table td strong {
+    color: #2c3e50;
     font-weight: 600;
-    color: #006837;
-}
-
-.table tbody td:first-child strong {
-    color: inherit;
 }
 
 .badge {
-    padding: 0.4rem 0.8rem;
+    padding: 0.5rem 1rem;
     border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.badge::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
-}
-
-.badge:hover::before {
-    left: 100%;
 }
 
 .badge-success {
-    background: #28a745;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
     color: white;
-    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
 .badge-warning {
-    background: #ffc107;
-    color: white;
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: #212529;
 }
 
 .badge-danger {
-    background: #dc3545;
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
     color: white;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 }
 
 .badge-info {
-    background: #17a2b8;
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
     color: white;
-    box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+}
+
+.badge-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
 }
 
 .pagination {
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 0.5rem;
-    margin-top: 2rem;
+    margin: 2rem 0;
 }
 
 .pagination a, .pagination span {
-    padding: 0.5rem 1rem;
-    border: 1px solid #e1e8ed;
-    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
     text-decoration: none;
-    color: #2c3e50;
-    transition: all 0.2s ease;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.pagination a {
+    background: white;
+    color: #006837;
+    border-color: #e9ecef;
 }
 
 .pagination a:hover {
-    background: #FF6B00;
-    color: white;
-    border-color: #FF6B00;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3);
-}
-
-.pagination .current {
     background: #006837;
     color: white;
-    border-color: #006837;
-}
-
-/* Botones pequeños para acciones en tabla */
-.btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    border-radius: 6px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: all 0.3s ease;
-    margin: 0.2rem;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-sm:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.btn-sm i {
-    font-size: 0.7rem;
-}
-
-.btn-sm.btn-primary {
-    background: #006837;
+.pagination span.current {
+    background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
     color: white;
+    box-shadow: 0 4px 15px rgba(0, 104, 55, 0.3);
 }
 
-.btn-sm.btn-secondary {
-    background: #6c757d;
-    color: white;
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6c757d;
 }
 
-.btn-sm.btn-secondary:hover {
-    background: #5a6268;
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
 }
 
-.alert {
-    padding: 0.75rem;
-    border-radius: 6px;
-    margin-bottom: 1.5rem;
+.empty-state p {
+    font-size: 1.1rem;
+    margin: 0;
 }
 
-.alert-success {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.alert-error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-.alert-warning {
-    background: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeaa7;
-}
-
+/* Responsive */
 @media (max-width: 768px) {
     .page-container {
         padding: 1rem;
+    }
+    
+    .page-header {
+        padding: 2rem 1.5rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
     }
     
     .filters-grid {
         grid-template-columns: 1fr;
     }
     
-    .table {
-        font-size: 0.875rem;
+    .table-container {
+        overflow-x: auto;
     }
     
-    .table th, .table td {
-        padding: 0.5rem;
+    .table {
+        min-width: 600px;
+    }
+    
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-row {
+        grid-template-columns: 1fr;
     }
 }
 </style>
@@ -353,42 +393,55 @@
 
 {% block content %}
 <div class="page-container">
-    <!-- Header -->
+    <!-- Header con estadísticas -->
     <div class="page-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <h1 class="page-title">
-                    <i class="fas fa-user-graduate"></i> Aprendices
-                </h1>
-                <p class="page-subtitle">Gestión de aprendices del sistema</p>
+        <h1 class="page-title">
+            <i class="fas fa-user-graduate"></i> Aprendices
+        </h1>
+        <p class="page-subtitle">Gestión de aprendices del sistema de vinculación laboral</p>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-number">
+                {% if mostrar_todos %}
+                    {{ aprendices|length }}
+                {% else %}
+                    {{ aprendices.paginator.count }}
+                {% endif %}
             </div>
-            <div>
-                <a href="{% url 'dashboard_estadisticas' %}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Volver al Dashboard
-                </a>
+            <div class="stat-label">Total Aprendices</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">
+                {% if mostrar_todos %}
+                    {{ aprendices|length }}
+                {% else %}
+                    {{ aprendices.paginator.count }}
+                {% endif %}
             </div>
+            <div class="stat-label">Activos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">18</div>
+            <div class="stat-label">En Proceso</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">5</div>
+            <div class="stat-label">Contratados</div>
         </div>
     </div>
 
-    <!-- Messages -->
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <!-- Filters -->
+    <!-- Filtros -->
     <div class="filters-section">
-        <h3 class="filters-title">
-            <i class="fas fa-filter"></i> Filtros y Búsqueda
-        </h3>
+        <h2 class="filters-title">
+            <i class="fas fa-filter"></i> Filtros de Búsqueda
+        </h2>
         <form method="GET" class="filters-grid">
             <div class="form-group">
                 <label for="q">Buscar:</label>
-                <input type="text" id="q" name="q" 
-                       class="form-control" 
+                <input type="text" id="q" name="q" class="form-control" 
                        placeholder="Nombre o correo..." 
                        value="{{ busqueda|default:'' }}">
             </div>
@@ -406,17 +459,27 @@
             </div>
             
             <div class="form-group">
+                <label for="empresa">Empresa:</label>
+                <select id="empresa" name="empresa" class="form-control">
+                    <option value="">Todas las empresas</option>
+                    {% for empresa in empresas %}
+                    <option value="{{ empresa.id }}" {% if empresa_seleccionado == empresa.id %}selected{% endif %}>
+                        {{ empresa.nombre }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
                 <label for="ficha">Ficha:</label>
-                <input type="text" id="ficha" name="ficha" 
-                       class="form-control" 
+                <input type="text" id="ficha" name="ficha" class="form-control" 
                        placeholder="Número de ficha..." 
                        value="{{ ficha_filtro|default:'' }}">
             </div>
             
             <div class="form-group">
                 <label for="programa">Programa:</label>
-                <input type="text" id="programa" name="programa" 
-                       class="form-control" 
+                <input type="text" id="programa" name="programa" class="form-control" 
                        placeholder="Programa de formación..." 
                        value="{{ programa_filtro|default:'' }}">
             </div>
@@ -426,7 +489,7 @@
                     <i class="fas fa-search"></i> Buscar
                 </button>
                 <a href="{% url 'lista_aprendices' %}" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Limpiar Filtros
+                    <i class="fas fa-times"></i> Limpiar
                 </a>
                 {% if not mostrar_todos %}
                 <a href="?todos=true{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.estado %}&estado={{ request.GET.estado }}{% endif %}{% if request.GET.empresa %}&empresa={{ request.GET.empresa }}{% endif %}{% if request.GET.ficha %}&ficha={{ request.GET.ficha }}{% endif %}{% if request.GET.programa %}&programa={{ request.GET.programa }}{% endif %}" class="btn btn-info">
@@ -434,40 +497,25 @@
                 </a>
                 {% else %}
                 <a href="{% url 'lista_aprendices' %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}{% if request.GET.estado %}?estado={{ request.GET.estado }}{% endif %}{% if request.GET.empresa %}?empresa={{ request.GET.empresa }}{% endif %}{% if request.GET.ficha %}?ficha={{ request.GET.ficha }}{% endif %}{% if request.GET.programa %}?programa={{ request.GET.programa }}{% endif %}" class="btn btn-warning">
-                    <i class="fas fa-th-list"></i> Paginar (5 por página)
+                    <i class="fas fa-th-list"></i> Paginar
                 </a>
                 {% endif %}
             </div>
         </form>
     </div>
 
-    <!-- Results Info -->
-    <div class="page-header">
-        <p>
-            <strong>Total de aprendices:</strong> 
-            {% if mostrar_todos %}
-                {{ aprendices|length }}
-            {% else %}
-                {{ aprendices.paginator.count }}
-            {% endif %}
-            {% if busqueda or estado_filtro or empresa_filtro or ficha_filtro or programa_filtro %}
-            <br><small>(Resultados filtrados)</small>
-            {% endif %}
-        </p>
-    </div>
-
-    <!-- Table -->
+    <!-- Tabla de aprendices -->
     <div class="table-container">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Identificación</th>
-                    <th>Correo</th>
-                    <th>Ficha</th>
-                    <th>Programa</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
+                    <th><i class="fas fa-user"></i> Nombre</th>
+                    <th><i class="fas fa-id-card"></i> Identificación</th>
+                    <th><i class="fas fa-envelope"></i> Correo</th>
+                    <th><i class="fas fa-hashtag"></i> Ficha</th>
+                    <th><i class="fas fa-graduation-cap"></i> Programa</th>
+                    <th><i class="fas fa-info-circle"></i> Estado</th>
+                    <th><i class="fas fa-cog"></i> Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -475,53 +523,53 @@
                 <tr>
                     <td>
                         <strong>{{ aprendiz.nombre }}</strong>
+                        {% if aprendiz.postulacion_reciente %}
+                        <br><small class="text-muted">
+                            <i class="fas fa-building"></i> {{ aprendiz.postulacion_reciente.empresa.nombre }}
+                        </small>
+                        {% endif %}
                     </td>
                     <td>{{ aprendiz.numero_identificacion }}</td>
                     <td>{{ aprendiz.correo }}</td>
-                    <td>{{ aprendiz.ficha }}</td>
-                    <td>{{ aprendiz.programa_formacion }}</td>
+                    <td>{{ aprendiz.ficha|default:"-" }}</td>
+                    <td>{{ aprendiz.programa_formacion|default:"-" }}</td>
                     <td>
                         {% if aprendiz.estado == "DISPONIBLE" %}
                             <span class="badge badge-success">
-                                {{ aprendiz.get_estado_display }}
+                                <i class="fas fa-check-circle"></i> {{ aprendiz.get_estado_display }}
                             </span>
                         {% elif aprendiz.estado == "CONTRATADO" %}
                             <span class="badge badge-success">
-                                {{ aprendiz.get_estado_display }}
+                                <i class="fas fa-briefcase"></i> {{ aprendiz.get_estado_display }}
                             </span>
                         {% elif aprendiz.estado == "PROCESO_SELECCION" or aprendiz.estado == "PROCESO_SELECCION_ABIERTO" %}
                             <span class="badge badge-warning">
-                                {{ aprendiz.get_estado_display }}
+                                <i class="fas fa-clock"></i> {{ aprendiz.get_estado_display }}
                             </span>
                         {% elif aprendiz.estado == "CONTRATO_NO_REGISTRADO" %}
                             <span class="badge badge-warning">
-                                {{ aprendiz.get_estado_display }}
+                                <i class="fas fa-exclamation-triangle"></i> {{ aprendiz.get_estado_display }}
                             </span>
                         {% elif aprendiz.estado == "INHABILITADO_POR_ACTUALIZACION" %}
                             <span class="badge badge-danger">
-                                {{ aprendiz.get_estado_display }}
+                                <i class="fas fa-ban"></i> {{ aprendiz.get_estado_display }}
                             </span>
                         {% else %}
                             <span class="badge badge-info">
-                                {{ aprendiz.get_estado_display }}
+                                <i class="fas fa-info-circle"></i> {{ aprendiz.get_estado_display }}
                             </span>
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'detalle_aprendiz' aprendiz.id %}" 
-                           class="btn btn-sm btn-primary">
+                        <a href="{% url 'detalle_aprendiz' aprendiz.id %}" class="btn btn-sm btn-primary">
                             <i class="fas fa-eye"></i> Ver
-                        </a>
-                        <a href="{% url 'editar_aprendiz' aprendiz.id %}" 
-                           class="btn btn-sm btn-secondary">
-                            <i class="fas fa-edit"></i> Editar
                         </a>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" style="text-align: center; padding: 2rem;">
-                        <i class="fas fa-search" style="font-size: 2rem; color: #95a5a6; margin-bottom: 1rem;"></i>
+                    <td colspan="7" class="empty-state">
+                        <i class="fas fa-search"></i>
                         <p>No se encontraron aprendices con los filtros seleccionados.</p>
                     </td>
                 </tr>
@@ -530,7 +578,7 @@
         </table>
     </div>
 
-    <!-- Pagination -->
+    <!-- Paginación -->
     {% if not mostrar_todos and aprendices.has_other_pages %}
     <div class="pagination">
         {% if aprendices.has_previous %}
