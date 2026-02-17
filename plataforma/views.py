@@ -590,13 +590,15 @@ def login_view(request):
             return render(request, "plataforma/login.html")
 
     print("=== RETORNANDO HTML DIRECTO ===")
-    html_response = """
+    from django.middleware.csrf import get_token
+    
+    html_response = f"""
     <!DOCTYPE html>
     <html>
     <head>
         <title>LOGIN SGVA</title>
         <style>
-            body { 
+            body {{ 
                 font-family: Arial; 
                 background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
                 display: flex; 
@@ -604,25 +606,25 @@ def login_view(request):
                 align-items: center; 
                 min-height: 100vh; 
                 margin: 0; 
-            }
-            .login-box { 
+            }}
+            .login-box {{ 
                 background: white; 
                 padding: 2rem; 
                 border-radius: 10px; 
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
                 max-width: 400px; 
                 width: 100%; 
-            }
-            .form-group { margin-bottom: 1rem; }
-            input { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }
-            button { width: 100%; padding: 0.75rem; background: #006837; color: white; border: none; border-radius: 5px; cursor: pointer; }
+            }}
+            .form-group {{ margin-bottom: 1rem; }}
+            input {{ width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }}
+            button {{ width: 100%; padding: 0.75rem; background: #006837; color: white; border: none; border-radius: 5px; cursor: pointer; }}
         </style>
     </head>
     <body>
         <div class="login-box">
             <h2 style="text-align: center; margin-bottom: 1.5rem; color: #006837;">SGVA - Iniciar Sesión</h2>
             <form method="post">
-                <input type="hidden" name="csrfmiddlewaretoken" value="TOKEN_CSRF_AQUI">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{get_token(request)}">
                 <div class="form-group">
                     <input type="text" name="username" placeholder="Usuario" required>
                 </div>
