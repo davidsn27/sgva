@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -565,6 +565,8 @@ def registro_empresa(request):
 
 def login_view(request):
     """Inicia sesion en el sistema"""
+    print("=== VISTA LOGIN EJECUTÁNDOSE ===")
+    
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -587,7 +589,54 @@ def login_view(request):
             messages.error(request, "Usuario o contrasena invalidos")
             return render(request, "plataforma/login.html")
 
-    return render(request, "plataforma/login.html")
+    print("=== RETORNANDO HTML DIRECTO ===")
+    html_response = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>LOGIN SGVA</title>
+        <style>
+            body { 
+                font-family: Arial; 
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                min-height: 100vh; 
+                margin: 0; 
+            }
+            .login-box { 
+                background: white; 
+                padding: 2rem; 
+                border-radius: 10px; 
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+                max-width: 400px; 
+                width: 100%; 
+            }
+            .form-group { margin-bottom: 1rem; }
+            input { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }
+            button { width: 100%; padding: 0.75rem; background: #006837; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        </style>
+    </head>
+    <body>
+        <div class="login-box">
+            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #006837;">SGVA - Iniciar Sesión</h2>
+            <form method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="TOKEN_CSRF_AQUI">
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Usuario" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                </div>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return HttpResponse(html_response)
 
 
 def logout_view(request):
