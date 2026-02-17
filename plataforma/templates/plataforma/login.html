@@ -4,7 +4,7 @@
 <div class="login-wrapper">
 
     <div class="card-modern login-card">
-        <h3 class="text-center mb-4" style="color:var(--primary);font-weight:800">
+        <h3 class="text-center mb-4" style="color:var(--primary);font-weight:800;">
             Acceso Funcionarios
         </h3>
 
@@ -20,74 +20,4 @@
     </div>
 
 </div>
-
-{% endblock %}
-
-.checkbox-input {
-    width: auto;
-    margin: 0;
-}
-
-.forgot-password {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
-}
-
-.forgot-password:hover {
-    color: var(--primary-dark);
-    text-decoration: underline;
-}
-
-.btn-primary {
-    width: 100%;
-    justify-content: center;
-}
-</style>
-{% endblock %}
-
-{% block content %}
-<div class="card-modern p-4" style="max-width:420px;margin:auto;margin-top:8vh">
-    <h3 class="mb-4 text-center" style="color:var(--sgva-primary)">
-        Ingreso de funcionarios
-    </h3>
-
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert-sgva">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <input class="input-sgva w-100 mb-3" name="username" placeholder="Usuario" required>
-
-        <input type="password" class="input-sgva w-100 mb-4" name="password" placeholder="Contraseña" required>
-
-        <button class="btn-sgva w-100" type="submit">Ingresar</button>
-    </form>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Enfocar en el primer campo del formulario
-    const usernameField = document.getElementById('username');
-    if (usernameField) {
-        usernameField.focus();
-    }
-});
-</script>
-
-{% block bootstrap_js %}
-<!-- Bootstrap JS eliminado para evitar conflictos en el login -->
-{% endblock %}
-
-{% block extra_js %}
-<!-- Sin scripts adicionales -->
-{% endblock %}
 {% endblock %}
