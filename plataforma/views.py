@@ -1054,6 +1054,11 @@ def panel_funcionarios(request):
 # ========================
 @login_required(login_url="login")
 @login_required(login_url="login")
+def registro_aprendiz(request):
+    """Muestra el formulario de registro para aprendices"""
+    return render(request, "plataforma/registro_aprendiz.html")
+
+
 def registrar_aprendiz_funcionario(request):
     """Vista para que funcionarios SENA registren aprendices"""
     try:

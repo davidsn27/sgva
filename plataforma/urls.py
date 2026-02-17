@@ -60,6 +60,8 @@ urlpatterns = [
         name="postular",
     ),
     path("registro/empresa/", views.registro_empresa, name="registro_empresa"),
+    path("registro/", views.registro_tipo, name="registro_tipo"),
+    path("registro/aprendiz/", views.registro_aprendiz, name="registro_aprendiz"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout_view"),
     path("oportunidades/", views.oportunidades, name="oportunidades"),

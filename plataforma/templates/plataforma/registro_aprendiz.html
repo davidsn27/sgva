@@ -1,0 +1,207 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Registro de Aprendiz - SGVA{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-user-graduate"></i> Registro de Aprendiz
+        </h1>
+        <p class="page-subtitle">Completa el formulario para crear tu perfil en el sistema SGVA</p>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <div class="content-grid">
+        <div class="info-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h3 class="card-title">Información Personal</h3>
+            </div>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        <i class="fas fa-{{ message.tags == 'error' and 'exclamation-triangle' or 'info-circle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" id="registroForm">
+                {% csrf_token %}
+                <div class="filters-grid">
+                    <div class="form-group">
+                        <label for="nombre">
+                            <i class="fas fa-user"></i> Nombre Completo
+                        </label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" 
+                               placeholder="Ingrese su nombre completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="tipo_documento">
+                            <i class="fas fa-id-card"></i> Tipo de Documento
+                        </label>
+                        <select name="tipo_documento" id="tipo_documento" class="form-control" required>
+                            <option value="">Seleccione...</option>
+                            <option value="CC">Cédula de Ciudadanía</option>
+                            <option value="TI">Tarjeta de Identidad</option>
+                            <option value="CE">Cédula de Extranjería</option>
+                            <option value="PA">Pasaporte</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="numero_documento">
+                            <i class="fas fa-hashtag"></i> Número de Documento
+                        </label>
+                        <input type="text" name="numero_documento" id="numero_documento" class="form-control" 
+                               placeholder="Ingrese su número de documento" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="correo">
+                            <i class="fas fa-envelope"></i> Correo Electrónico
+                        </label>
+                        <input type="email" name="correo" id="correo" class="form-control" 
+                               placeholder="correo@ejemplo.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefono">
+                            <i class="fas fa-phone"></i> Teléfono
+                        </label>
+                        <input type="tel" name="telefono" id="telefono" class="form-control" 
+                               placeholder="3001234567" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="direccion">
+                            <i class="fas fa-map-marker-alt"></i> Dirección
+                        </label>
+                        <input type="text" name="direccion" id="direccion" class="form-control" 
+                               placeholder="Calle #123, Ciudad">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ficha">
+                            <i class="fas fa-hashtag"></i> Número de Ficha
+                        </label>
+                        <input type="text" name="ficha" id="ficha" class="form-control" 
+                               placeholder="1234567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="programa_formacion">
+                            <i class="fas fa-graduation-cap"></i> Programa de Formación
+                        </label>
+                        <input type="text" name="programa_formacion" id="programa_formacion" class="form-control" 
+                               placeholder="Nombre del programa">
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Registrarse como Aprendiz
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="info-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <h3 class="card-title">Información Importante</h3>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Requisitos</div>
+                <div class="info-value">
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>Ser aprendiz activo del SENA</li>
+                        <li>Tener documento de identidad válido</li>
+                        <li>Correo electrónico personal</li>
+                        <li>Teléfono de contacto</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Beneficios del Registro</div>
+                <div class="info-value">
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>Acceso a oportunidades laborales</li>
+                        <li>Seguimiento de postulaciones</li>
+                        <li>Actualización de perfil en tiempo real</li>
+                        <li>Notificaciones de nuevas vacantes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="observacion-box">
+                <div class="info-label">Privacidad de Datos</div>
+                <div class="info-value">
+                    Sus datos personales serán tratados con confidencialidad y solo serán 
+                    compartidos con empresas autorizadas para fines de vinculación laboral.
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <p style="margin-bottom: 1rem; color: var(--secondary-color);">
+                    ¿Ya tienes una cuenta?
+                </p>
+                <a href="{% url 'login' %}" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Enfocar en el primer campo del formulario
+    const nombreField = document.getElementById('nombre');
+    if (nombreField) {
+        nombreField.focus();
+    }
+    
+    // Validación en tiempo real
+    const form = document.getElementById('registroForm');
+    const correoField = document.getElementById('correo');
+    const documentoField = document.getElementById('numero_documento');
+    
+    // Validar formato de correo
+    correoField.addEventListener('blur', function() {
+        const email = this.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (email && !emailRegex.test(email)) {
+            this.style.borderColor = 'var(--danger-color)';
+        } else {
+            this.style.borderColor = 'var(--border-color)';
+        }
+    });
+    
+    // Validar que el documento sea numérico
+    documentoField.addEventListener('input', function() {
+        const value = this.value.replace(/\D/g, '');
+        this.value = value;
+    });
+    
+    // Animación de entrada para el formulario
+    const cards = document.querySelectorAll('.info-card');
+    cards.forEach((card, index) => {
+        card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s backwards`;
+    });
+});
+</script>
+{% endblock %}
