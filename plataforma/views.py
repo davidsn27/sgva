@@ -1,4 +1,5 @@
 import json
+
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
@@ -56,80 +57,7 @@ def marcar_vencida_y_actualizar(postulacion):
 @login_required(login_url="login")
 def inicio(request):
     """Vista principal del sistema - Template informativo"""
-    print("=== VISTA INICIO EJECUTÁNDOSE ===")
-    
-    # HTML directo para evitar problemas de templates
-    html_response = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>INICIO SGVA</title>
-        <style>
-            body { 
-                font-family: Arial; 
-                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
-                margin: 0; 
-                padding: 20px;
-            }
-            .container { 
-                max-width: 1200px; 
-                margin: 0 auto; 
-                background: white; 
-                border-radius: 10px; 
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-                padding: 2rem; 
-            }
-            h1 { color: #006837; text-align: center; margin-bottom: 2rem; }
-            h2 { color: #333; margin-bottom: 1rem; }
-            .stats { 
-                display: grid; 
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-                gap: 1rem; 
-                margin: 2rem 0; 
-            }
-            .stat-card { 
-                background: #f8f9fa; 
-                padding: 1.5rem; 
-                border-radius: 8px; 
-                text-align: center; 
-                border-left: 4px solid #006837; 
-            }
-            .stat-number { font-size: 2rem; font-weight: bold; color: #006837; }
-            .stat-label { color: #666; margin-top: 0.5rem; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>SGVA - Sistema de Gestión de Vinculación Laboral</h1>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number">150+</div>
-                    <div class="stat-label">Aprendices Registrados</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">45+</div>
-                    <div class="stat-label">Empresas Activas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">89</div>
-                    <div class="stat-label">Postulaciones Activas</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">95%</div>
-                    <div class="stat-label">Tasa de Éxito</div>
-                </div>
-            </div>
-            
-            <h2>Bienvenido al Sistema SGVA</h2>
-            <p>Esta es la página principal para funcionarios del SENA.</p>
-            <p>Desde aquí puedes gestionar aprendices, empresas y el proceso de vinculación laboral.</p>
-        </div>
-    </body>
-    </html>
-    """
-    
-    return HttpResponse(html_response)
+    return render(request, 'plataforma/inicio.html')
 
 
 @login_required(login_url="login")
@@ -638,8 +566,6 @@ def registro_empresa(request):
 
 def login_view(request):
     """Inicia sesion en el sistema"""
-    print("=== VISTA LOGIN EJECUTÁNDOSE ===")
-    
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -657,61 +583,12 @@ def login_view(request):
             except:
                 pass
 
-            return redirect(f"{reverse('inicio')}?welcome=1")
+            return redirect("/?welcome=1")
         else:
             messages.error(request, "Usuario o contrasena invalidos")
             return render(request, "plataforma/login.html")
 
-    print("=== RETORNANDO HTML DIRECTO ===")
-    from django.middleware.csrf import get_token
-    
-    html_response = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>LOGIN SGVA</title>
-        <style>
-            body {{ 
-                font-family: Arial; 
-                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
-                display: flex; 
-                justify-content: center; 
-                align-items: center; 
-                min-height: 100vh; 
-                margin: 0; 
-            }}
-            .login-box {{ 
-                background: white; 
-                padding: 2rem; 
-                border-radius: 10px; 
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-                max-width: 400px; 
-                width: 100%; 
-            }}
-            .form-group {{ margin-bottom: 1rem; }}
-            input {{ width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; }}
-            button {{ width: 100%; padding: 0.75rem; background: #006837; color: white; border: none; border-radius: 5px; cursor: pointer; }}
-        </style>
-    </head>
-    <body>
-        <div class="login-box">
-            <h2 style="text-align: center; margin-bottom: 1.5rem; color: #006837;">SGVA - Iniciar Sesión</h2>
-            <form method="post">
-                <input type="hidden" name="csrfmiddlewaretoken" value="{get_token(request)}">
-                <div class="form-group">
-                    <input type="text" name="username" placeholder="Usuario" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Contraseña" required>
-                </div>
-                <button type="submit">Iniciar Sesión</button>
-            </form>
-        </div>
-    </body>
-    </html>
-    """
-    
-    return HttpResponse(html_response)
+    return render(request, "plataforma/login.html")
 
 
 def logout_view(request):
