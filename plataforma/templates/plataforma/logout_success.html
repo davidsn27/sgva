@@ -160,7 +160,7 @@
             <a href="{% url 'login' %}" class="btn btn-primary">
                 <i class="fas fa-sign-in-alt"></i> Iniciar Sesión Nuevamente
             </a>
-            <a href="{% url 'index' %}" class="btn btn-secondary">
+            <a href="{% url 'home' %}" class="btn btn-secondary">
                 <i class="fas fa-home"></i> Página Principal
             </a>
         </div>
@@ -172,7 +172,7 @@
 <script>
 // Redirigir automáticamente después de 5 segundos
 setTimeout(function() {
-    window.location.href = "{% url 'index' %}";
+    window.location.href = "{% url 'home' %}";
 }, 5000);
 
 // Prevenir que el usuario pueda volver atrás con el botón del navegador
