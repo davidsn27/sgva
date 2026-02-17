@@ -88,6 +88,18 @@ def inicio(request):
             "mostrar_boton_registro": True,
         }
         
+        # DEPURACIÓN: Imprimir datos que se envían al template
+        print("=== DATOS ENVIADOS AL TEMPLATE ===")
+        print(f"total_aprendices: {total_aprendices}")
+        print(f"total_empresas: {total_empresas}")
+        print(f"total_postulaciones: {total_postulaciones}")
+        print(f"aprendices_disponibles: {aprendices_disponibles}")
+        print(f"aprendices_seleccionados: {aprendices_seleccionados}")
+        print(f"aprendices_contratados: {aprendices_contratados}")
+        print(f"postulaciones_recientes count: {len(postulaciones_recientes)}")
+        print(f"aprendices_recientes count: {len(aprendices_recientes)}")
+        print("=====================================")
+        
         return render(request, "plataforma/inicio.html", context)
         
     except Exception as e:
