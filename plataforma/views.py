@@ -1373,21 +1373,107 @@ def dashboard_estadisticas(request):
     todos_aprendices = Aprendiz.objects.all().order_by('nombre')
     todas_postulaciones = Postulacion.objects.all().order_by('-fecha_postulacion')
     
+    # Calcular estadísticas adicionales
+    aprendices_disponibles = Aprendiz.objects.filter(estado='DISPONIBLE').count()
+    aprendices_proceso = Aprendiz.objects.filter(
+        estado__in=['PROCESO_SELECCION', 'PROCESO_SELECCION_ABIERTO']
+    ).count()
+    aprendices_contratados = Aprendiz.objects.filter(estado='CONTRATADO').count()
+    empresas_activas = Empresa.objects.filter(estado='ACTIVA').count()
+    postulaciones_pendientes = Postulacion.objects.filter(estado='PENDIENTE').count()
+    
+    # Postulaciones por mes (últimos 6 meses)
+    from collections import defaultdict
+    postulaciones_mes = defaultdict(int)
+    hace_6_meses = timezone.now() - timedelta(days=180)
+    
+    postulaciones_recientes = Postulacion.objects.filter(
+        fecha_postulacion__gte=hace_6_meses
+    ).extra({
+        'month': "strftime('%%Y-%%m', fecha_postulacion)"
+    }).values('month').annotate(count=Count('id')).order_by('month')
+    
+    for p in postulaciones_recientes:
+        month_names = {
+            '01': 'Ene', '02': 'Feb', '03': 'Mar', '04': 'Abr',
+            '05': 'May', '06': 'Jun', '07': 'Jul', '08': 'Ago',
+            '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dic'
+        }
+        month_key = p['month']
+        month_display = f"{month_names.get(month_key[5:], month_key[5:])}"
+        postulaciones_mes[month_display] = p['count']
+    
+    # Calcular tasas
+    tasa_contratacion = 0
+    if total_postulaciones > 0:
+        tasa_contratacion = round((aprendices_contratados / total_postulaciones) * 100, 1)
+    
+    tasa_seleccion = 0
+    if total_aprendices > 0:
+        tasa_seleccion = round((aprendices_proceso / total_aprendices) * 100, 1)
+    
+    tasa_postulacion = 0
+    if total_aprendices > 0:
+        aprendices_con_postulacion = Aprendiz.objects.filter(
+            postulacion__isnull=False
+        ).distinct().count()
+        tasa_postulacion = round((aprendices_con_postulacion / total_aprendices) * 100, 1)
+    
+    tasa_retencion = 85  # Simulado - podría calcularse con datos históricos
+    
+    # Actividad reciente (últimas 10 acciones)
+    actividades_recientes = []
+    
+    # Últimos aprendices creados
+    ultimos_aprendices = Aprendiz.objects.order_by('-fecha_ultima_actividad')[:5]
+    for aprendiz in ultimos_aprendices:
+        actividades_recientes.append({
+            'fecha': aprendiz.fecha_ultima_actividad,
+            'usuario': aprendiz.nombre,
+            'descripcion': 'Actualización de perfil de aprendiz',
+            'tipo': 'APRENDIZ'
+        })
+    
+    # Últimas postulaciones
+    ultimas_postulaciones = Postulacion.objects.order_by('-fecha_postulacion')[:5]
+    for postulacion in ultimas_postulaciones:
+        actividades_recientes.append({
+            'fecha': postulacion.fecha_postulacion,
+            'usuario': f"{postulacion.aprendiz.nombre} - {postulacion.empresa.nombre}",
+            'descripcion': 'Postulación a empresa',
+            'tipo': 'POSTULACION'
+        })
+    
+    # Ordenar actividades por fecha
+    actividades_recientes.sort(key=lambda x: x['fecha'], reverse=True)
+    actividades_recientes = actividades_recientes[:10]
+
     context = {
         'total_aprendices': total_aprendices,
         'total_empresas': total_empresas,
         'total_postulaciones': total_postulaciones,
+        'aprendices_contratados': aprendices_contratados,
+        'aprendices_disponibles': aprendices_disponibles,
+        'aprendices_proceso': aprendices_proceso,
+        'empresas_activas': empresas_activas,
+        'postulaciones_pendientes': postulaciones_pendientes,
         'aprendices_por_estado': aprendices_por_estado,
         'empresas_por_estado': empresas_por_estado,
         'postulaciones_por_estado': postulaciones_por_estado,
         'estados_aprendices': estados_aprendices,
         'estados_postulaciones': estados_postulaciones,
         'postulaciones_ultimo_mes': postulaciones_ultimo_mes,
+        'postulaciones_mes': dict(postulaciones_mes),
         'top_empresas': top_empresas,
         'top_aprendices': top_aprendices,
         'todos_aprendices': todos_aprendices,
         'todas_postulaciones': todas_postulaciones,
-        'fecha_actualizacion': timezone.now(),
+        'actividades_recientes': actividades_recientes,
+        'tasa_contratacion': tasa_contratacion,
+        'tasa_seleccion': tasa_seleccion,
+        'tasa_postulacion': tasa_postulacion,
+        'tasa_retencion': tasa_retencion,
+        'ultima_actualizacion': timezone.now(),
     }
     
     return render(request, 'plataforma/dashboard_simple.html', context)
