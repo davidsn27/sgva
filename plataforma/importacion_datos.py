@@ -79,12 +79,12 @@ class ImportadorDatos:
                         usuario.email = correo
                         usuario.save()
                     
-                    # Crear aprendiz primero (SIN perfil)
+                    # Crear aprendiz primero (SIN perfil) - mapeando campos correctamente
                     aprendiz = Aprendiz.objects.create(
                         nombre=f"{row['nombres']} {row['apellidos']}",
-                        tipo_documento=row.get('tipo_documento', 'CC'),
+                        tipo_identificacion=row.get('tipo_documento', 'CC'),  # 👈 mapeado
                         numero_identificacion=str(row['numero_documento']),
-                        correo=row['email'],
+                        correo=row['email'],  # 👈 mapeado
                         telefono=row.get('telefono', ''),
                         estado=MAP_ESTADOS_APRENDIZ.get(row.get('estado', '').lower(), 'DISPONIBLE'),
                         programa_formacion=row.get('programa_formacion', ''),
