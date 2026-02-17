@@ -1,176 +1,683 @@
 {% extends "plataforma/base.html" %}
 
-{% block title %}{{ aprendiz.nombre }}{% endblock %}
+{% block title %}{{ aprendiz.nombre }} - SGVA{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ESTILOS MODERNOS PARA DETALLE DE APRENDIZ */
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.header-section {
+    background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 104, 55, 0.3);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 20s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.aprendiz-info h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.aprendiz-info .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.info-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1f3f4;
+}
+
+.card-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.info-item {
+    margin-bottom: 1.5rem;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.info-value a {
+    color: #006837;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.info-value a:hover {
+    color: #004d2a;
+    text-decoration: underline;
+}
+
+.observacion-box {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-left: 4px solid #006837;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.observacion-box .info-label {
+    margin-bottom: 0.5rem;
+}
+
+.observacion-box .info-value {
+    color: #495057;
+    line-height: 1.6;
+}
+
+.status-section {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.status-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.status-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.status-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.status-item:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.badge {
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.badge-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: #212529;
+}
+
+.badge-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+    color: white;
+}
+
+.badge-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+    color: white;
+}
+
+.badge-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+}
+
+.postulaciones-section {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    padding: 2rem;
+}
+
+.postulaciones-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.postulaciones-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.postulacion-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #006837;
+    transition: all 0.3s ease;
+}
+
+.postulacion-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.postulacion-header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.empresa-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+}
+
+.empresa-info p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.postulacion-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.postulacion-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.detail-item i {
+    color: #006837;
+    width: 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 104, 55, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 104, 55, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 1rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .header-actions {
+        justify-content: center;
+    }
+    
+    .aprendiz-info h1 {
+        font-size: 2rem;
+    }
+    
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .status-content {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2>👤 {{ aprendiz.nombre }}</h2>
-        <div style="display: flex; gap: 10px;">
-            <a href="{% url 'editar_aprendiz' aprendiz.id %}" class="btn btn-warning" style="padding: 10px 15px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 5px;">✏️ Editar</a>
-            <a href="{% url 'lista_aprendices' %}" class="btn btn-secondary">Volver a aprendices</a>
-        </div>
-    </div>
-</div>
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-    <div class="card">
-        <h3>Informacion Personal</h3>
-        <p><strong>ID:</strong> {{ aprendiz.id }}</p>
-        <p><strong>Nombre:</strong> {{ aprendiz.nombre }}</p>
-        <p><strong>Correo:</strong> <a href="mailto:{{ aprendiz.correo }}" style="color: #007bff;">{{ aprendiz.correo }}</a></p>
-        <p><strong>Telefono:</strong> <a href="tel:{{ aprendiz.telefono }}" style="color: #007bff;">{{ aprendiz.telefono }}</a></p>
-        
-        {% if aprendiz.observacion %}
-        <div style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 15px;">
-            <p><strong>Observacion:</strong><br>{{ aprendiz.observacion }}</p>
-        </div>
-        {% endif %}
-    </div>
-    
-    <div class="card">        <h3>Informacion Academica</h3>
-        <p><strong>Ficha:</strong> {{ aprendiz.ficha|default:"No registrada" }}</p>
-        <p><strong>Programa de Formacion:</strong> {{ aprendiz.programa_formacion|default:"No registrado" }}</p>
-        
-        <div style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 15px;">
-            <p><strong>Ultima Actividad:</strong></p>
-            <p style="margin-top: 5px; color: #666;">{{ aprendiz.fecha_ultima_actividad|date:"d/m/Y H:i" }}</p>
-        </div>
-    </div>
-</div>
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-    <div style="grid-column: 1 / -1; background: #ffffff; border: 1px solid #cfd8dc; border-radius: 10px; padding: 18px; box-shadow: 0 6px 18px rgba(16,24,40,0.06);">
-        <h3 style="margin-top: 0;">Estado y Empresa</h3>
-        <div style="display: flex; gap: 18px; align-items: flex-start;">
-            <div style="flex: 1;">
-                <p><strong>Estado:</strong></p>
-                {% if not aprendiz.estado or aprendiz.estado|length == 0 or aprendiz.estado == "DISPONIBLE" %}
-                    <span class="badge badge-primary">DISPONIBLE</span>
-                    <p style="color: #0056b3; margin-top: 5px;">Aprendiz sin asignar.</p>
-                {% elif aprendiz.estado == "PROCESO_SELECCION" %}
-                    <span class="badge badge-warning">PROCESO SELECCION</span>
-                    <p style="color: #856404; margin-top: 5px;">En proceso de seleccion.</p>
-                {% elif aprendiz.estado == "PROCESO_SELECCION_ABIERTO" %}
-                    <span class="badge" style="background-color: #FF9800; color: white; padding: 6px 12px; border-radius: 16px;">SELECCION ABIERTO</span>
-                    <p style="color: #856404; margin-top: 5px;">En proceso de seleccion abierto.</p>
-                {% elif aprendiz.estado == "CONTRATO_NO_REGISTRADO" %}
-                    <span style="background: #c62828; color: #fff; padding: 6px 12px; border-radius: 16px; font-weight: 600; font-size: 12px; display: inline-block;">CONTRATO NO REGISTRADO</span>
-                    <p style="color: #721c24; margin-top: 8px;">Contrato no registrado.</p>
-                {% elif aprendiz.estado == "CONTRATADO" %}
-                    <span class="badge badge-success">CONTRATADO</span>
-                    <p style="color: #155724; margin-top: 5px;">Aprendiz con contrato vigente.</p>
-                {% elif aprendiz.estado == "INHABILITADO_POR_ACTUALIZACION" %}
-                    <span class="badge" style="background-color: #999; color: white; padding: 6px 12px; border-radius: 16px;">INHABILITADO</span>
-                    <p style="color: #666; margin-top: 5px;">Aprendiz inhabilitado por falta de actualizacion.</p>
-                {% else %}
-                    <span class="badge badge-secondary">{{ aprendiz.estado }}</span>
-                {% endif %}
+<div class="page-container">
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-content">
+            <div class="aprendiz-info">
+                <h1>
+                    <i class="fas fa-user-graduate"></i> {{ aprendiz.nombre }}
+                </h1>
+                <p class="subtitle">
+                    <i class="fas fa-id-card"></i> {{ aprendiz.numero_identificacion }}
+                    <span>•</span>
+                    <i class="fas fa-envelope"></i> {{ aprendiz.correo }}
+                </p>
             </div>
-
-            <div style="flex: 1;">
-                <p><strong>Empresa en proceso/seleccionada:</strong></p>
-                {% if empresa_proceso and aprendiz.estado != "DISPONIBLE" and aprendiz.estado != "INHABILITADO_POR_ACTUALIZACION" %}
-                    <p style="color: #006837; margin: 0;">
-                        <a href="{% url 'detalle_empresa' empresa_proceso.id %}" style="color: inherit; text-decoration: none; font-weight: 600;">{{ empresa_proceso.nombre }}</a>
-                        <a href="{% url 'detalle_empresa' empresa_proceso.id %}" class="btn btn-info" style="background-color: #2196F3; color: white; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 14px; margin-left: 10px;">Informar Empresa</a>
-                    </p>
-                {% else %}
-                    <p style="color: #999; margin: 0;">Sin empresa en proceso o seleccionada</p>
-                {% endif %}
+            <div class="header-actions">
+                <a href="{% url 'editar_aprendiz' aprendiz.id %}" class="btn btn-warning">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a href="{% url 'lista_aprendices' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
             </div>
         </div>
     </div>
-</div>
 
-<div class="card" style="border: 1px solid #cfd8dc; border-radius: 12px; padding: 18px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); background: #ffffff;">
-    <h3 style="border-bottom: 3px solid #4CAF50; padding-bottom: 15px; margin-bottom: 25px;">📋 Historial de Postulaciones</h3>
-    {% if postulaciones %}
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;">
-        {% for postulacion in postulaciones %}
-        <div style="border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.1)'">
-            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
-                <div style="flex: 1;">
-                    <h4 style="margin: 0 0 5px 0; color: #1a237e; font-size: 16px;">
-                        <a href="{% url 'detalle_empresa' postulacion.empresa.id %}" style="color: inherit; text-decoration: none;">
-                            🏢 {{ postulacion.empresa.nombre }}
-                        </a>
-                    </h4>
-                    <small style="color: #666;">Empresa</small>
+    <!-- Content Grid -->
+    <div class="content-grid">
+        <!-- Información Personal -->
+        <div class="info-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-user"></i>
                 </div>
-                <div>
-                    {% if postulacion.estado == "PENDIENTE" %}
-                        <span style="background: #FF9800; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">⏳ EN PROCESO</span>
-                    {% elif postulacion.estado == "PROCESO_SELECCION_ABIERTO" %}
-                        <span style="background: #4CAF50; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">✓ ABIERTO</span>
-                    {% elif postulacion.estado == "CONTRATO_NO_REGISTRADO" %}
-                        <span style="background: #f44336; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">⚠ NO REG</span>
-                    {% elif postulacion.estado == "CONTRATADO" %}
-                        <span style="background: #2E7D32; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">🎉 CONTRATADO</span>
-                    {% elif postulacion.estado == "DISPONIBLE" %}
-                        <span style="background: #9E9E9E; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">↺ DISPONIBLE</span>
+                <h3 class="card-title">Información Personal</h3>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Nombre Completo</div>
+                <div class="info-value">{{ aprendiz.nombre }}</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Tipo de Identificación</div>
+                <div class="info-value">{{ aprendiz.get_tipo_identificacion_display|default:aprendiz.tipo_identificacion }}</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Número de Identificación</div>
+                <div class="info-value">{{ aprendiz.numero_identificacion }}</div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Correo Electrónico</div>
+                <div class="info-value">
+                    <a href="mailto:{{ aprendiz.correo }}">{{ aprendiz.correo }}</a>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Teléfono</div>
+                <div class="info-value">
+                    {% if aprendiz.telefono %}
+                        <a href="tel:{{ aprendiz.telefono }}">{{ aprendiz.telefono }}</a>
                     {% else %}
-                        <span style="background: #999; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block;">{{ postulacion.estado }}</span>
+                        <span style="color: #6c757d;">No registrado</span>
                     {% endif %}
                 </div>
             </div>
             
-            <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 12px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                    <div style="border-right: 1px solid #e0e0e0; padding-right: 12px;">
-                        <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">📅 Postulación</div>
-                        <div style="font-size: 14px; font-weight: bold; color: #1a237e;">{{ postulacion.fecha_postulacion|date:"d/m/Y" }}</div>
-                        <div style="font-size: 12px; color: #999; margin-top: 2px;">{{ postulacion.fecha_postulacion|time:"H:i" }}</div>
-                    </div>
-                    <div>
-                        <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">⏳ Días transcurridos</div>
-                        {% if postulacion.dias_desde_postulacion != None %}
-                            <div style="font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px; border-radius: 4px; text-align: center;">{{ postulacion.dias_desde_postulacion }}</div>
-                            <div style="font-size: 12px; color: #999; text-align: center; margin-top: 2px;">días</div>
-                        {% else %}
-                            <div style="font-size: 12px; color: #999;">Calculando...</div>
-                        {% endif %}
-                    </div>
+            {% if aprendiz.observacion %}
+            <div class="observacion-box">
+                <div class="info-label">Observaciones</div>
+                <div class="info-value">{{ aprendiz.observacion }}</div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Información Académica -->
+        <div class="info-card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
-                
-                {% if postulacion.estado == "PENDIENTE" %}
-                <div style="border-top: 1px solid #e0e0e0; padding-top: 12px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <div style="font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold;">🕐 Plazo de 15 días</div>
-                        {% if postulacion.vencida %}
-                            <span style="background: #ff4444; color: white; padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: bold;">⚠ VENCIDA</span>
-                        {% elif postulacion.dias_restantes|default:0 <= 3 %}
-                            <span style="background: #FF9800; color: white; padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: bold;">⏰ POR VENCER</span>
-                        {% endif %}
-                    </div>
-                    <div style="width: 100%; background: #e0e0e0; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
-                        <div style="background: linear-gradient(90deg, #4CAF50 0%, #FFC107 50%, #f44336 100%); height: 100%; width: {{ postulacion.porcentaje_progreso }}%; border-radius: 3px;"></div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <small style="color: #666;">📆 Vence: <strong>{{ postulacion.fecha_vencimiento|date:"d/m/Y" }}</strong></small>
-                        {% if postulacion.vencida %}
-                            <strong style="color: #f44336;">Vencida hace {{ postulacion.dias_restantes|default:0 }} días</strong>
-                        {% elif postulacion.dias_restantes|default:0 >= 0 %}
-                            <strong style="color: #4CAF50;">{{ postulacion.dias_restantes|default:0 }} días</strong>
-                        {% endif %}
-                    </div>
+                <h3 class="card-title">Información Académica</h3>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Número de Ficha</div>
+                <div class="info-value">
+                    {% if aprendiz.ficha %}
+                        {{ aprendiz.ficha }}
+                    {% else %}
+                        <span style="color: #6c757d;">No registrada</span>
+                    {% endif %}
                 </div>
-                {% endif %}
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Programa de Formación</div>
+                <div class="info-value">
+                    {% if aprendiz.programa_formacion %}
+                        {{ aprendiz.programa_formacion }}
+                    {% else %}
+                        <span style="color: #6c757d;">No registrado</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <div class="info-label">Última Actividad</div>
+                <div class="info-value">
+                    <i class="fas fa-clock"></i> {{ aprendiz.fecha_ultima_actividad|date:"d/m/Y H:i" }}
+                </div>
             </div>
         </div>
-        {% endfor %}
     </div>
-    {% else %}
-    <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 40px 20px; border-radius: 8px; text-align: center;">
-        <div style="font-size: 48px; margin-bottom: 15px;">📋</div>
-        <h3 style="color: #1a237e; margin: 10px 0;">Sin postulaciones registradas</h3>
-        <p style="color: #666; margin: 10px 0; font-size: 16px;">Este aprendiz aún no ha realizado postulaciones a empresas.</p>
-        <div style="margin-top: 20px;">
-            <a href="{% url 'lista_empresas' %}" class="btn btn-primary" style="background-color: #4CAF50; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold;">
-                🔍 Explorar Oportunidades
-            </a>
+
+    <!-- Status Section -->
+    <div class="status-section">
+        <div class="status-header">
+            <div class="card-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h3 class="card-title">Estado y Situación Actual</h3>
+        </div>
+        
+        <div class="status-content">
+            <div class="status-item">
+                {% if aprendiz.estado == "DISPONIBLE" %}
+                    <span class="badge badge-success">
+                        <i class="fas fa-check-circle"></i> DISPONIBLE
+                    </span>
+                    <p style="margin: 0; color: #28a745; font-weight: 600;">Aprendiz disponible para postulación</p>
+                {% elif aprendiz.estado == "CONTRATADO" %}
+                    <span class="badge badge-success">
+                        <i class="fas fa-briefcase"></i> CONTRATADO
+                    </span>
+                    <p style="margin: 0; color: #28a745; font-weight: 600;">Aprendiz actualmente contratado</p>
+                {% elif aprendiz.estado == "PROCESO_SELECCION" or aprendiz.estado == "PROCESO_SELECCION_ABIERTO" %}
+                    <span class="badge badge-warning">
+                        <i class="fas fa-clock"></i> {{ aprendiz.get_estado_display }}
+                    </span>
+                    <p style="margin: 0; color: #ffc107; font-weight: 600;">En proceso de selección</p>
+                {% elif aprendiz.estado == "CONTRATO_NO_REGISTRADO" %}
+                    <span class="badge badge-warning">
+                        <i class="fas fa-exclamation-triangle"></i> CONTRATO NO REGISTRADO
+                    </span>
+                    <p style="margin: 0; color: #ffc107; font-weight: 600;">Contrato pendiente de registro</p>
+                {% elif aprendiz.estado == "INHABILITADO_POR_ACTUALIZACION" %}
+                    <span class="badge badge-danger">
+                        <i class="fas fa-ban"></i> INHABILITADO
+                    </span>
+                    <p style="margin: 0; color: #dc3545; font-weight: 600;">Inhabilitado por actualización</p>
+                {% else %}
+                    <span class="badge badge-info">
+                        <i class="fas fa-info-circle"></i> {{ aprendiz.get_estado_display }}
+                    </span>
+                    <p style="margin: 0; color: #17a2b8; font-weight: 600;">Estado personalizado</p>
+                {% endif %}
+            </div>
+            
+            <div class="status-item">
+                <div style="font-size: 2rem; font-weight: 800; color: #006837; margin-bottom: 0.5rem;">
+                    {% if aprendiz.empresa_actual %}
+                        {{ aprendiz.empresa_actual.nombre }}
+                    {% else %}
+                        Sin asignar
+                    {% endif %}
+                </div>
+                <div style="color: #6c757d; font-weight: 600;">Empresa Actual</div>
+            </div>
+            
+            <div class="status-item">
+                <div style="font-size: 2rem; font-weight: 800; color: #6f42c1; margin-bottom: 0.5rem;">
+                    {{ postulaciones|length }}
+                </div>
+                <div style="color: #6c757d; font-weight: 600;">Total Postulaciones</div>
+            </div>
         </div>
     </div>
-    {% endif %}
+
+    <!-- Postulaciones Section -->
+    <div class="postulaciones-section">
+        <div class="postulaciones-header">
+            <div class="card-icon">
+                <i class="fas fa-file-contract"></i>
+            </div>
+            <h3 class="card-title">Historial de Postulaciones</h3>
+        </div>
+        
+        {% if postulaciones %}
+            <div class="postulaciones-grid">
+                {% for postulacion in postulaciones %}
+                <div class="postulacion-card">
+                    <div class="postulacion-header-info">
+                        <div class="empresa-info">
+                            <h4>{{ postulacion.empresa.nombre }}</h4>
+                            <p><i class="fas fa-building"></i> {{ postulacion.empresa.nit }}</p>
+                        </div>
+                        <div class="postulacion-meta">
+                            {% if postulacion.estado == "DISPONIBLE" %}
+                                <span class="badge badge-success">
+                                    <i class="fas fa-check-circle"></i> {{ postulacion.get_estado_display }}
+                                </span>
+                            {% elif postulacion.estado == "CONTRATADO" %}
+                                <span class="badge badge-success">
+                                    <i class="fas fa-briefcase"></i> {{ postulacion.get_estado_display }}
+                                </span>
+                            {% elif postulacion.estado == "PROCESO_SELECCION_ABIERTO" %}
+                                <span class="badge badge-warning">
+                                    <i class="fas fa-clock"></i> {{ postulacion.get_estado_display }}
+                                </span>
+                            {% elif postulacion.estado == "CONTRATO_NO_REGISTRADO" %}
+                                <span class="badge badge-warning">
+                                    <i class="fas fa-exclamation-triangle"></i> {{ postulacion.get_estado_display }}
+                                </span>
+                            {% elif postulacion.estado == "RECHAZADO" %}
+                                <span class="badge badge-danger">
+                                    <i class="fas fa-times-circle"></i> {{ postulacion.get_estado_display }}
+                                </span>
+                            {% else %}
+                                <span class="badge badge-info">
+                                    <i class="fas fa-info-circle"></i> {{ postulacion.get_estado_display }}
+                                </span>
+                            {% endif %}
+                            <small style="color: #6c757d;">
+                                <i class="fas fa-calendar"></i> {{ postulacion.fecha_postulacion|date:"d/m/Y H:i" }}
+                            </small>
+                        </div>
+                    </div>
+                    
+                    {% if postulacion.observacion_aprendiz or postulacion.observacion_empresa %}
+                    <div class="postulacion-details">
+                        {% if postulacion.observacion_aprendiz %}
+                        <div class="detail-item">
+                            <i class="fas fa-comment"></i>
+                            <span>Obs. Aprendiz: {{ postulacion.observacion_aprendiz }}</span>
+                        </div>
+                        {% endif %}
+                        {% if postulacion.observacion_empresa %}
+                        <div class="detail-item">
+                            <i class="fas fa-building"></i>
+                            <span>Obs. Empresa: {{ postulacion.observacion_empresa }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>Este aprendiz no tiene postulaciones registradas</p>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
