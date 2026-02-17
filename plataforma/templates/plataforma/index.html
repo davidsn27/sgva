@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SGVA - Sistema de Gestión de Vinculación Laboral</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23006837' width='100' height='100'/><text x='50' y='65' font-size='60' font-weight='bold' text-anchor='middle' fill='white'>S</text></svg>">
     <style>
         * {
             margin: 0;
@@ -16,9 +17,42 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #006837 0%, #FF6B00 100%);
+            background: linear-gradient(135deg, #006837 0%, #004d2a 100%);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .hero-container {
@@ -29,6 +63,7 @@
             align-items: center;
             position: relative;
             padding: 2rem;
+            z-index: 1;
         }
 
         .hero-content {
@@ -45,6 +80,7 @@
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             line-height: 1.2;
+            letter-spacing: -1px;
         }
 
         .hero-subtitle {
@@ -52,7 +88,6 @@
             color: rgba(255,255,255,0.9);
             margin-bottom: 2rem;
             font-weight: 300;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .hero-description {
@@ -60,280 +95,302 @@
             color: rgba(255,255,255,0.8);
             margin-bottom: 3rem;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
             line-height: 1.8;
         }
 
-        .cta-container {
+        .action-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
             margin-bottom: 3rem;
         }
 
-        .cta-button {
+        .btn-hero {
             padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
             font-size: 1.1rem;
             font-weight: 600;
+            cursor: pointer;
             text-decoration: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .cta-primary {
-            background: white;
-            color: #006837;
-        }
-
-        .cta-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .cta-secondary {
+        .btn-hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
             background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-hero:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B00 0%, #ff8c42 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
             color: white;
             border: 2px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
         }
 
-        .cta-secondary:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.5);
         }
 
-        .features-grid {
+        .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             max-width: 1000px;
             margin: 0 auto;
-            z-index: 2;
+            width: 100%;
         }
 
         .feature-card {
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
             border-radius: 20px;
             padding: 2rem;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.2);
             transition: all 0.3s ease;
-            animation: fadeInUp 1s ease-out;
+            animation: fadeInUp 1s ease-out backwards;
         }
 
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.4s; }
+        .feature-card:nth-child(3) { animation-delay: 0.6s; }
+
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
         }
 
         .feature-icon {
             font-size: 3rem;
-            color: white;
-            margin-bottom: 1rem;
+            color: #FF6B00;
+            margin-bottom: 1.5rem;
+            display: block;
         }
 
         .feature-title {
             font-size: 1.3rem;
+            font-weight: 700;
             color: white;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
+            margin-bottom: 1rem;
         }
 
         .feature-description {
             color: rgba(255,255,255,0.8);
-            font-size: 0.95rem;
             line-height: 1.6;
         }
 
-        .floating-shapes {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
+        .stats-bar {
             background: rgba(255,255,255,0.1);
-            animation: float 6s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 3rem auto;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
         }
 
-        .shape1 {
-            width: 200px;
-            height: 200px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
         }
 
-        .shape2 {
-            width: 150px;
-            height: 150px;
-            top: 20%;
-            right: 10%;
-            animation-delay: 2s;
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FF6B00;
+            margin-bottom: 0.5rem;
+            display: block;
         }
 
-        .shape3 {
-            width: 100px;
-            height: 100px;
-            bottom: 20%;
-            left: 20%;
-            animation-delay: 4s;
+        .stat-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
-        .shape4 {
-            width: 180px;
-            height: 180px;
-            bottom: 10%;
-            right: 20%;
-            animation-delay: 1s;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-            }
-        }
-
-        .footer {
+        .footer-info {
             position: absolute;
             bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
-            color: rgba(255,255,255,0.7);
-            z-index: 2;
-            width: 100%;
-        }
-
-        .footer p {
+            color: rgba(255,255,255,0.6);
             font-size: 0.9rem;
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2.5rem;
             }
-
+            
             .hero-subtitle {
                 font-size: 1.2rem;
             }
-
-            .hero-description {
-                font-size: 1rem;
-            }
-
-            .cta-container {
+            
+            .action-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-
-            .cta-button {
-                width: 250px;
-                justify-content: center;
-            }
-
-            .features-grid {
+            
+            .features {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
-
-            .feature-card {
-                padding: 1.5rem;
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="hero-container">
-        <div class="floating-shapes">
-            <div class="shape shape1"></div>
-            <div class="shape shape2"></div>
-            <div class="shape shape3"></div>
-            <div class="shape shape4"></div>
-        </div>
-
         <div class="hero-content">
-            <h1 class="hero-title">
-                <i class="fas fa-graduation-cap"></i> SGVA
-            </h1>
+            <h1 class="hero-title">SGVA</h1>
             <p class="hero-subtitle">Sistema de Gestión de Vinculación Laboral</p>
             <p class="hero-description">
-                Conecta aprendices con empresas del SENA, facilitando el proceso de postulación y seguimiento de prácticas profesionales.
+                Plataforma integral para la gestión de aprendices, empresas y el proceso de vinculación laboral del SENA. 
+                Conectando talento con oportunidades de forma eficiente y transparente.
             </p>
-
-            <div class="cta-container">
-                <a href="{% url 'info_funcionalidad' %}" class="cta-button cta-primary">
-                    <i class="fas fa-info-circle"></i>
-                    Información de la plataforma
+            
+            <div class="action-buttons">
+                <a href="{% url 'login' %}" class="btn-hero btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
                 </a>
-                {% if not user.is_authenticated %}
-                    <a href="/login/" class="cta-button cta-secondary">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Iniciar Sesión
-                    </a>
-                {% endif %}
+                <a href="{% url 'registro_tipo' %}" class="btn-hero btn-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    Registrarse
+                </a>
             </div>
         </div>
 
-        <div class="features-grid">
+        <div class="features">
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-user-graduate"></i>
-                </div>
-                <h3 class="feature-title">Para Aprendices</h3>
+                <i class="fas fa-user-graduate feature-icon"></i>
+                <h3 class="feature-title">Gestión de Aprendices</h3>
                 <p class="feature-description">
-                    Encuentra oportunidades de práctica, postula a empresas y sigue el progreso de tus aplicaciones.
+                    Administración completa del perfil de aprendices, seguimiento de su estado y gestión documental.
                 </p>
             </div>
-
+            
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-building"></i>
-                </div>
-                <h3 class="feature-title">Para Empresas</h3>
+                <i class="fas fa-building feature-icon"></i>
+                <h3 class="feature-title">Control de Empresas</h3>
                 <p class="feature-description">
-                    Publica vacantes, recibe postulaciones y gestiona el proceso de selección de aprendices.
+                    Registro y gestión de empresas participantes, con seguimiento de oportunidades laborales.
                 </p>
             </div>
-
+            
             <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <h3 class="feature-title">Para Funcionarios</h3>
+                <i class="fas fa-handshake feature-icon"></i>
+                <h3 class="feature-title">Proceso de Vinculación</h3>
                 <p class="feature-description">
-                    Supervisa el proceso, gestiona aprendices y empresas, y genera reportes de seguimiento.
+                    Flujo completo de postulaciones, selección y contratación con trazabilidad total.
                 </p>
             </div>
         </div>
 
-        <div class="footer">
-            <p>&copy; 2026 SGVA - Sistema de Gestión de Vinculación Laboral | SENA</p>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Aprendices</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Empresas</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">1000+</span>
+                <span class="stat-label">Postulaciones</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">85%</span>
+                <span class="stat-label">Éxito</span>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <p>&copy; 2024 SENA - Servicio Nacional de Aprendizaje. Todos los derechos reservados.</p>
         </div>
     </div>
+
+    <script>
+        // Animación de números en las estadísticas
+        document.addEventListener('DOMContentLoaded', function() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            statNumbers.forEach(element => {
+                const text = element.textContent;
+                const finalValue = parseInt(text.replace(/\D/g, ''));
+                
+                if (isNaN(finalValue)) return;
+                
+                let currentValue = 0;
+                const increment = finalValue / 50;
+                
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= finalValue) {
+                        currentValue = finalValue;
+                        clearInterval(timer);
+                    }
+                    
+                    if (text.includes('+')) {
+                        element.textContent = Math.floor(currentValue) + '+';
+                    } else if (text.includes('%')) {
+                        element.textContent = Math.floor(currentValue) + '%';
+                    } else {
+                        element.textContent = Math.floor(currentValue);
+                    }
+                }, 20);
+            });
+        });
+    </script>
 </body>
 </html>

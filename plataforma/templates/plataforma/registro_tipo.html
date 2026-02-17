@@ -3,204 +3,183 @@
 {% block title %}Elegir tipo de Registro - SGVA{% endblock %}
 
 {% block content %}
-<style>
-    .tipo-registro-container {
-        max-width: 900px;
-        margin: 40px auto;
-    }
-
-    .tipo-registro-header {
-        text-align: center;
-        margin-bottom: 50px;
-        color: white;
-    }
-
-    .tipo-registro-header h1 {
-        font-size: 36px;
-        margin-bottom: 10px;
-    }
-
-    .tipo-registro-header p {
-        font-size: 16px;
-        opacity: 0.9;
-    }
-
-    .tipo-cards {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        margin-bottom: 30px;
-    }
-
-    .tipo-card {
-        background: white;
-        padding: 40px 30px;
-        border-radius: 12px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 3px solid transparent;
-    }
-
-    .tipo-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-        border-color: #007bff;
-    }
-
-    .tipo-icon {
-        font-size: 64px;
-        margin-bottom: 20px;
-    }
-
-    .tipo-title {
-        font-size: 24px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 15px;
-    }
-
-    .tipo-description {
-        color: #666;
-        font-size: 14px;
-        line-height: 1.6;
-        margin-bottom: 25px;
-    }
-
-    .tipo-benefits {
-        text-align: left;
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 13px;
-    }
-
-    .tipo-benefits li {
-        margin: 8px 0;
-        color: #555;
-    }
-
-    .tipo-benefits strong {
-        color: #007bff;
-    }
-
-    .btn-register-type {
-        width: 100%;
-        padding: 12px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .btn-aprendiz {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .btn-aprendiz:hover {
-        background-color: #0056b3;
-    }
-
-    .btn-empresa {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .btn-empresa:hover {
-        background-color: #218838;
-    }
-
-    .back-link {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    .back-link a {
-        color: white;
-        text-decoration: none;
-        font-size: 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .back-link a:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 768px) {
-        .tipo-cards {
-            grid-template-columns: 1fr;
-        }
-
-        .tipo-registro-header h1 {
-            font-size: 24px;
-        }
-
-        .tipo-icon {
-            font-size: 48px;
-        }
-
-        .tipo-title {
-            font-size: 20px;
-        }
-    }
-</style>
-
-<div class="tipo-registro-container">
-    <div class="tipo-registro-header">
-        <h1>Elige tu tipo de Registro</h1>
-        <p>Selecciona si eres un aprendiz buscando oportunidades o una empresa contratante</p>
+<div class="page-container">
+    <!-- Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-user-plus"></i> Registro de Usuarios
+        </h1>
+        <p class="page-subtitle">Seleccione el tipo de cuenta que desea crear en el sistema SGVA</p>
     </div>
 
-    <div class="tipo-cards">
-        <!-- Card Aprendiz -->
-        <div class="tipo-card">
-            <div class="tipo-icon">👨‍🎓</div>
-            <div class="tipo-title">Soy Aprendiz</div>
-            <div class="tipo-description">
-                Busco oportunidades de trabajo y capacitacion en empresas
+    <!-- Opciones de Registro -->
+    <div class="content-grid">
+        <a href="{% url 'registro_aprendiz' %}" class="import-card">
+            <div class="import-icon">
+                <i class="fas fa-user-graduate"></i>
             </div>
-            <div class="tipo-benefits">
-                <strong>Ventajas:</strong>
-                <ul style="margin: 8px 0 0 20px;">
-                    <li>Ver todas las oportunidades disponibles</li>
-                    <li>Postularte a empresas interesantes</li>
-                    <li>Gestionar tus postulaciones</li>
-                    <li>Crear tu perfil profesional</li>
-                </ul>
+            <h4>Aprendiz</h4>
+            <p>
+                Regístrate como aprendiz para postular a oportunidades laborales, 
+                gestionar tu perfil y seguir el estado de tus postulaciones.
+            </p>
+            <div style="margin-top: 1rem;">
+                <span class="badge badge-primary">Más Popular</span>
             </div>
-                    </div>
+        </a>
+        
+        <a href="{% url 'registro_empresa' %}" class="import-card">
+            <div class="import-icon">
+                <i class="fas fa-building"></i>
+            </div>
+            <h4>Empresa</h4>
+            <p>
+                Registra tu empresa para ofrecer oportunidades laborales, 
+                gestionar postulaciones recibidas y contratar talento del SENA.
+            </p>
+            <div style="margin-top: 1rem;">
+                <span class="badge badge-success">Para Empresas</span>
+            </div>
+        </a>
+    </div>
 
-        <!-- Card Empresa -->
-        <div class="tipo-card">
-            <div class="tipo-icon">🏢</div>
-            <div class="tipo-title">Soy una Empresa</div>
-            <div class="tipo-description">
-                Busco talento joven para fortalecer mi equipo de trabajo
+    <!-- Información Adicional -->
+    <div class="info-card">
+        <div class="card-header">
+            <div class="card-icon">
+                <i class="fas fa-info-circle"></i>
             </div>
-            <div class="tipo-benefits">
-                <strong>Ventajas:</strong>
-                <ul style="margin: 8px 0 0 20px;">
-                    <li>Publicar oportunidades laborales</li>
-                    <li>Ver perfiles de aprendices</li>
-                    <li>Revisar postulaciones</li>
-                    <li>Gestionar tu informacion empresarial</li>
-                </ul>
+            <h3 class="card-title">Información Importante</h3>
+        </div>
+        
+        <div class="content-grid">
+            <div class="info-item">
+                <div class="info-label">Requisitos para Aprendices</div>
+                <div class="info-value">
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>Ser aprendiz del SENA</li>
+                        <li>Tener documento de identidad válido</li>
+                        <li>Correo electrónico activo</li>
+                        <li>Teléfono de contacto</li>
+                    </ul>
+                </div>
             </div>
-            <a href="{% url 'registro_empresa' %}" class="btn-register-type btn-empresa">
-                Registrarse como Empresa
-            </a>
+            
+            <div class="info-item">
+                <div class="info-label">Requisitos para Empresas</div>
+                <div class="info-value">
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>NIT válido</li>
+                        <li>Representante legal autorizado</li>
+                        <li>Información de contacto actualizada</li>
+                        <li>Descripción de la empresa</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="observacion-box">
+            <div class="info-label">Soporte Técnico</div>
+            <div class="info-value">
+                Si tienes problemas con el registro, contacta al equipo de soporte del SENA 
+                a través de los canales oficiales de comunicación.
+            </div>
         </div>
     </div>
 
-    <div class="back-link">
-        <a href="/">← Volver a Inicio</a>
+    <!-- Estadísticas del Sistema -->
+    <div class="info-card">
+        <div class="card-header">
+            <div class="card-icon">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+            <h3 class="card-title">Plataforma en Cifras</h3>
+        </div>
+        
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Aprendices Registrados</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Empresas Activas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Postulaciones</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">85%</div>
+                <div class="stat-label">Tasa de Éxito</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enlaces Rápidos -->
+    <div class="info-card">
+        <div class="card-header">
+            <div class="card-icon">
+                <i class="fas fa-link"></i>
+            </div>
+            <h3 class="card-title">Enlaces Útiles</h3>
+        </div>
+        
+        <div class="content-grid">
+            <a href="{% url 'login' %}" class="import-card">
+                <div class="import-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <h4>Ya tengo cuenta</h4>
+                <p>Inicia sesión en tu cuenta existente</p>
+            </a>
+            
+            <a href="{% url 'info_funcionalidad' %}" class="import-card">
+                <div class="import-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h4>Ayuda</h4>
+                <p>Guías y tutoriales de uso</p>
+            </a>
+        </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación de entrada para las tarjetas
+    const cards = document.querySelectorAll('.import-card');
+    cards.forEach((card, index) => {
+        card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s backwards`;
+    });
+    
+    // Animación de números en estadísticas
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(element => {
+        const text = element.textContent;
+        const finalValue = parseInt(text.replace(/\D/g, ''));
+        
+        if (isNaN(finalValue)) return;
+        
+        let currentValue = 0;
+        const increment = finalValue / 50;
+        
+        const timer = setInterval(() => {
+            currentValue += increment;
+            if (currentValue >= finalValue) {
+                currentValue = finalValue;
+                clearInterval(timer);
+            }
+            
+            if (text.includes('+')) {
+                element.textContent = Math.floor(currentValue) + '+';
+            } else if (text.includes('%')) {
+                element.textContent = Math.floor(currentValue) + '%';
+            } else {
+                element.textContent = Math.floor(currentValue);
+            }
+        }, 20);
+    });
+});
+</script>
 {% endblock %}

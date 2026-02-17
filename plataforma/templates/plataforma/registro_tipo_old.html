@@ -1,0 +1,206 @@
+{% extends "plataforma/base.html" %}
+
+{% block title %}Elegir tipo de Registro - SGVA{% endblock %}
+
+{% block content %}
+<style>
+    .tipo-registro-container {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+
+    .tipo-registro-header {
+        text-align: center;
+        margin-bottom: 50px;
+        color: white;
+    }
+
+    .tipo-registro-header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .tipo-registro-header p {
+        font-size: 16px;
+        opacity: 0.9;
+    }
+
+    .tipo-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .tipo-card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+    }
+
+    .tipo-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        border-color: #007bff;
+    }
+
+    .tipo-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+
+    .tipo-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .tipo-description {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .tipo-benefits {
+        text-align: left;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+    .tipo-benefits li {
+        margin: 8px 0;
+        color: #555;
+    }
+
+    .tipo-benefits strong {
+        color: #007bff;
+    }
+
+    .btn-register-type {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-aprendiz {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-aprendiz:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-empresa {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn-empresa:hover {
+        background-color: #218838;
+    }
+
+    .back-link {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .back-link a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .back-link a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .tipo-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .tipo-registro-header h1 {
+            font-size: 24px;
+        }
+
+        .tipo-icon {
+            font-size: 48px;
+        }
+
+        .tipo-title {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<div class="tipo-registro-container">
+    <div class="tipo-registro-header">
+        <h1>Elige tu tipo de Registro</h1>
+        <p>Selecciona si eres un aprendiz buscando oportunidades o una empresa contratante</p>
+    </div>
+
+    <div class="tipo-cards">
+        <!-- Card Aprendiz -->
+        <div class="tipo-card">
+            <div class="tipo-icon">👨‍🎓</div>
+            <div class="tipo-title">Soy Aprendiz</div>
+            <div class="tipo-description">
+                Busco oportunidades de trabajo y capacitacion en empresas
+            </div>
+            <div class="tipo-benefits">
+                <strong>Ventajas:</strong>
+                <ul style="margin: 8px 0 0 20px;">
+                    <li>Ver todas las oportunidades disponibles</li>
+                    <li>Postularte a empresas interesantes</li>
+                    <li>Gestionar tus postulaciones</li>
+                    <li>Crear tu perfil profesional</li>
+                </ul>
+            </div>
+                    </div>
+
+        <!-- Card Empresa -->
+        <div class="tipo-card">
+            <div class="tipo-icon">🏢</div>
+            <div class="tipo-title">Soy una Empresa</div>
+            <div class="tipo-description">
+                Busco talento joven para fortalecer mi equipo de trabajo
+            </div>
+            <div class="tipo-benefits">
+                <strong>Ventajas:</strong>
+                <ul style="margin: 8px 0 0 20px;">
+                    <li>Publicar oportunidades laborales</li>
+                    <li>Ver perfiles de aprendices</li>
+                    <li>Revisar postulaciones</li>
+                    <li>Gestionar tu informacion empresarial</li>
+                </ul>
+            </div>
+            <a href="{% url 'registro_empresa' %}" class="btn-register-type btn-empresa">
+                Registrarse como Empresa
+            </a>
+        </div>
+    </div>
+
+    <div class="back-link">
+        <a href="/">← Volver a Inicio</a>
+    </div>
+</div>
+{% endblock %}
