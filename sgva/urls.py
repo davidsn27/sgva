@@ -8,6 +8,8 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # Aplicaciones
+    path("", include("plataforma.urls")),
     # API Documentation (Swagger/OpenAPI)
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
@@ -22,6 +24,4 @@ urlpatterns = [
     ),
     # OAuth y Autenticación
     path("accounts/", include("allauth.urls")),
-    # Aplicaciones
-    path("", include("plataforma.urls")),
 ]
