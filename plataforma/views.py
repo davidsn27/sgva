@@ -565,28 +565,13 @@ def registro_empresa(request):
 
 def login_view(request):
     """Inicia sesion en el sistema"""
+    print("=== VISTA LOGIN EJECUTÁNDOSE ===")
+    
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-
-        usuario = authenticate(request, username=username, password=password)
-
-        if usuario is not None:
-            login(request, usuario)
-
-            # Redirigir según rol
-            try:
-                perfil = usuario.perfil
-                if perfil.rol == "ESTUDIANTE":
-                    return redirect("dashboard")
-            except:
-                pass
-
-            return redirect(f"{reverse('inicio')}?welcome=1")
-        else:
-            messages.error(request, "Usuario o contrasena invalidos")
-            return render(request, "plataforma/login.html")
-
+        print("=== MÉTODO POST ===")
+        return render(request, "plataforma/login.html")
+    
+    print("=== MÉTODO GET - RENDERIZANDO TEMPLATE ===")
     return render(request, "plataforma/login.html")
 
 
